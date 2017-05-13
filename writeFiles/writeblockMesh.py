@@ -1,4 +1,5 @@
-def writeblockmesh(modelLocation, det):
+import globalvar
+def writeblockmesh(modelLocation):
     pass
 #     with open(modelLocation, 'w') as modelfile:
 #
@@ -24,7 +25,7 @@ def writeblockmesh(modelLocation, det):
 #         modelfile.write('vertices\n')
 #         modelfile.write('(\n')
 #         modelfile.write('(%10.8f %10.8f %10.8f)\n',0,0,0)#0
-#         modelfile.write('(%10.8f %10.8f %10.8f)\n',0,det,0);%1
+#         modelfile.write('(%10.8f %10.8f %10.8f)\n',0,globalvar.det,0);%1
 #         modelfile.write('(%10.8f %10.8f %10.8f)\n',0,4*det,0);%2
 #
 #         modelfile.write('(%10.8f %10.8f %10.8f)\n',0.005,-0.002,0);%3

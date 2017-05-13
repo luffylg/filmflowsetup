@@ -1,7 +1,7 @@
 import math
+import globalvar
 
-
-def writegfile(glocation,g,ang):
+def writegfile(glocation):
     with open(glocation,'w') as gl:
         gl.write('/*--------------------------------*- C++ -*----------------------------------  \n')
         gl.write('| =========                 |                                                 |\n')
@@ -20,5 +20,5 @@ def writegfile(glocation,g,ang):
         gl.write('}\n')
         gl.write('// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //\n')
         gl.write('dimensions      [0 1 -2 0 0 0 0];\n')
-        gl.write('value           (%10.8f  %10.8f 0);\n'% (g*math.sin(math.radians(ang)),-g*math.cos(math.radians(ang))))
+        gl.write('value           (%10.8f  %10.8f 0);\n'% (globalvar.g*math.sin(math.radians(globalvar.ang)),-globalvar.g*math.cos(math.radians(globalvar.ang))))
         gl.write('// ************************************************************************* //\n')
