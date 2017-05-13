@@ -1,6 +1,8 @@
-import globalvar
+import globalvar as gv
+
+
 def writesetfields(setFieldsLocation):
-    with open(setFieldsLocation,'w') as setfields:
+    with open(setFieldsLocation, 'w') as setfields:
         setfields.write('/*--------------------------------*- C++ -*----------------------------------  \n')
         setfields.write('| =========                 |                                                 |\n')
         setfields.write('| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |\n')
@@ -27,7 +29,9 @@ def writesetfields(setFieldsLocation):
         setfields.write('(\n')
         setfields.write('    boxToCell\n')
         setfields.write('    {\n')
-        # setfields.write('        box (0 -0.002 -1) (%10.8f %10.8f 1);\n'% (globalvar.wnum*globalvar.L,globalvar.det))?
+        setfields.write('        box (0 %10.8f %10.8f) (%10.8f %10.8f %10.8f);\n' % (
+        -gv.A, -gv.width, gv.L_in + gv.L_out + gv.wnum * gv.L, gv.det,
+        gv.width))
         setfields.write('        fieldValues\n')
         setfields.write('        (\n')
         setfields.write('            volScalarFieldValue alpha1 1\n')

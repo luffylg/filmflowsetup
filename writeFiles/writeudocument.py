@@ -1,13 +1,13 @@
 import math
-import globalvar
+import globalvar as gv
 
 
 def writeudocument(ulocation):
     # define the 'U' document
-    uave = globalvar.det * globalvar.det * globalvar.g * math.sin(math.radians(globalvar.ang)) / globalvar.v / 3
+    uave = gv.det * gv.det * gv.g * math.sin(math.radians(gv.ang)) / gv.v / 3
     umax = uave * 1.5
-    aa = 1 / globalvar.det
-    ab = globalvar.g * math.sin(math.radians(globalvar.ang)) * globalvar.det * globalvar.det / globalvar.v
+    aa = 1 / gv.det
+    ab = gv.g * math.sin(math.radians(gv.ang)) * gv.det * gv.det / gv.v
 
     # begin to write the txt into the document
     with open(ulocation, 'w') as ufile:

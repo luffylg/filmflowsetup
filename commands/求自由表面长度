@@ -1,0 +1,67 @@
+%排序法
+format long;
+for q=4:2:60
+sn=sprintf('r%da5',q);
+  sz=importdata(sn);  
+  r=length(sz);
+  for i=1:(r-1)
+     for j=(i+1):r
+         if sz(i,1)>sz(j,1)
+            temp=sz(i,:);
+            sz(i,:)=sz(j,:);
+            sz(j,:)=temp;
+         end
+     end
+  end
+data_save(q)={sz};
+end
+
+%提取数据
+for rr=4:2:60
+n=size(data_save{1,rr},1);
+jj=1;
+for ii=1:n
+   if  (data_save{1,rr}(ii,1)>=0.01)&(data_save{1,rr}(ii,1)<=0.02)
+        B{1,rr}(jj,:)=data_save{1,rr}(ii,:);
+        jj=jj+1;
+   end  
+ end
+end
+
+
+
+%求自由表面长度
+  k=0;
+for j=4:2:60
+    k=k+1;
+    sz=B{1,j};
+    n=size(sz,1);
+    b=zeros(n-1,1);
+    for i=1:(n-1);
+    b(i)=sqrt((sz(i,1)-sz(i+1,1))^2+(sz(i,2)-sz(i+1,2))^2);
+    A(k)=sum(b)
+    end
+end
+
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

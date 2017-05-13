@@ -1,0 +1,40 @@
+%排序法
+format long;
+for q=4:2:60
+sn=sprintf('r%da5',q);
+  sz=importdata(sn);  
+  r=length(sz);
+  for i=1:(r-1)
+     for j=(i+1):r
+         if sz(i,1)>sz(j,1)
+            temp=sz(i,:);
+            sz(i,:)=sz(j,:);
+            sz(j,:)=temp;
+         end
+     end
+  end
+data_save(q)={sz};
+end
+
+%提取数据
+for rr=4:2:60
+n=size(data_save{1,rr},1);
+jj=1;
+for ii=1:n
+   if  (data_save{1,rr}(ii,1)>=0.01)&(data_save{1,rr}(ii,1)<=0.02)
+        B{1,rr}(jj,:)=data_save{1,rr}(ii,:);
+        jj=jj+1;
+   end  
+ end
+end
+
+
+
+
+
+%求相位差
+for y=4:2:60
+ans=min(B{1,y}(:,2));
+[m n]=find(B{1,y}==ans);
+D{1,y}=(min(B{1,y}(m,1))-0.015)*2*pi/0.01;
+end

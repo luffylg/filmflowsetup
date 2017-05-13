@@ -6,27 +6,28 @@ from writeFiles.writeblockMesh import writeblockmesh
 from writeFiles.writegfile import writegfile
 from writeFiles.writesetfields import writesetfields
 from writeFiles.writeudocument import writeudocument
-import globalvar
+import globalvar as gv
 
 
 def pre_process():
     # calculate the thickness
-    globalvar.det = math.pow(
-            3.0 * globalvar.v * globalvar.v * globalvar.Re / (globalvar.g * math.sin(math.radians(globalvar.ang))),
+    gv.det = math.pow(
+            3.0 * gv.v * gv.v * gv.Re / (gv.g * math.sin(math.radians(gv.ang))),
             1.0 / 3)
 
 
 def copy_model(method):
     if method == "Reang":
-        filename = "r{0}a{1}".format(globalvar.Re, globalvar.ang)
+        filename = "r{0}a{1}".format(gv.Re, gv.ang)
     if method == "h":
-        filename = "r{0}a{1}h{2}".format(globalvar.Re, globalvar.ang, globalvar.A * 1000)
+        filename = "r{0}a{1}h{2}".format(gv.Re, gv.ang, gv.A * 1000)
     if method == "wnum":
-        filename = "r{0}a{1}w{2}".format(globalvar.Re, globalvar.ang, globalvar.wnum)
-    if os.path.exists(filename):
-        raise Exception("alreadt exists {0}".format(filename))
+        filename = "r{0}a{1}w{2}".format(gv.Re, gv.ang, gv.wnum)
+    gv.realfiledir = os.path.join(basedir, filename)
+    if os.path.exists(gv.realfiledir):
+        raise Exception("alreadt exists {0}".format(gv.realfiledir))
     else:
-        shutil.copytree("model", os.path.join(basedir, filename))
+        shutil.copytree("model", gv.realfiledir)
     writefiles(filename)
 
 
@@ -42,21 +43,22 @@ def writefiles(filename):
 
 
 if __name__ == '__main__':
+    bd = os.path.join(gv.base, gv.structure)
     # change Re in fixed angle
-    basedir = os.path.join(globalvar.base, 'Reang')
+    basedir = os.path.join(bd, 'Reang')
     for i in range(1, 7, 2):
-        globalvar.Re = i
+        gv.Re = i
         pre_process()
         copy_model("Reang")
     # change height of corrugation
-    basedir = os.path.join(globalvar.base, 'height')
+    basedir = os.path.join(bd, 'height')
     for i in range(1, 3):
-        globalvar.A = i / 1000
+        gv.A = i / 1000
         pre_process()
         copy_model("h")
     # change wavenums
-    basedir = os.path.join(globalvar.base, 'wavenums')
+    basedir = os.path.join(bd, 'wavenums')
     for i in range(3, 6):
-        globalvar.wnum = i
+        gv.wnum = i
         pre_process()
         copy_model("wnum")
