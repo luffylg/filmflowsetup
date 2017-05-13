@@ -1,0 +1,23 @@
+s2=fopen('allrun','wt');
+fprintf(s2,'#!/bin/sh\n');
+fprintf(s2,'# Source tutorial run functions\n');
+fprintf(s2,'. $WM_PROJECT_DIR/bin/tools/RunFunctions\n');
+fprintf(s2,'\n');
+fprintf(s2,'# Set application name\n');
+fprintf(s2,'application="interFoam"\n');
+
+for j=4:2:60
+    Re=j;
+    fprintf(s2,'\n');
+    fprintf(s2,'cd r%da11\n',Re);
+    fprintf(s2,'    runApplication blockMesh\n');
+    fprintf(s2,'    runApplication setFields\n');
+    fprintf(s2,'    runApplication decomposePar\n');
+    fprintf(s2,'    runParallel $application 8\n');
+    fprintf(s2,'    runApplication reconstructPar\n');
+    fprintf(s2,'    runApplication sample\n');
+    fprintf(s2,'    runApplication foamToTecplot360\n');
+    fprintf(s2,'cd ..\n');
+end
+
+fclose(s2);

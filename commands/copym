@@ -1,0 +1,32 @@
+#!/bin/sh
+# Source tutorial run functions
+. $WM_PROJECT_DIR/bin/tools/RunFunctions
+cp -r model r4a11 
+cp -r model r6a11 
+cp -r model r8a11 
+cp -r model r10a11 
+cp -r model r12a11 
+cp -r model r14a11 
+cp -r model r16a11 
+cp -r model r18a11 
+cp -r model r20a11 
+cp -r model r22a11 
+cp -r model r24a11 
+cp -r model r26a11 
+cp -r model r28a11 
+cp -r model r30a11 
+cp -r model r32a11 
+cp -r model r34a11 
+cp -r model r36a11 
+cp -r model r38a11 
+cp -r model r40a11 
+cp -r model r42a11 
+cp -r model r44a11 
+cp -r model r46a11 
+cp -r model r48a11 
+cp -r model r50a11 
+cp -r model r52a11 
+cp -r model r54a11 
+cp -r model r56a11 
+cp -r model r58a11 
+cp -r model r60a11 

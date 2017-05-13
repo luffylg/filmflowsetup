@@ -1,0 +1,13 @@
+%cd OpenFOAM/xiaolou-2.1.1/mycase/lijie/tris/a11
+% make directories and copy model
+s1=fopen('copym','wt');
+fprintf(s1,'#!/bin/sh\n');
+fprintf(s1,'# Source tutorial run functions\n');
+fprintf(s1,'. $WM_PROJECT_DIR/bin/tools/RunFunctions\n');
+
+
+    for j=4:2:60
+    Re=j;
+    fprintf(s1,'cp -r model r%da11 \n',Re);
+    end
+fclose(s1);
