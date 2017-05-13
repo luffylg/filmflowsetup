@@ -1,10 +1,9 @@
 import math
 import os
-
 import shutil
 
 from utils import getconfig
-from writeblockMesh import writeblockmesh
+from writeFiles.writeblockMesh import writeblockmesh
 
 
 def pre_process():
@@ -30,9 +29,6 @@ def copy_model(method):
         raise Exception("alreadt exists {0}".format(filename))
     else:
         shutil.copytree("model",filename)
-
-
-
 
 if __name__ == '__main__':
     modelLocation = getconfig("locations", "modelLocation")
