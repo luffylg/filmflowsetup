@@ -1,6 +1,7 @@
 import math
 
 import globalvar as gv
+from writeFiles.writesinMesh import writesinmesh
 
 
 def writetridot(modelfile):
@@ -12,9 +13,9 @@ def writetridot(modelfile):
     modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in, gv.det, 0))  # 4
     modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in, 4 * gv.det, 0))  # 5
     for i in range(1, gv.wnum + 1):
-        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L / 2 * i, -gv.A, 0))  # i*6
-        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L / 2 * i, gv.det, 0))  # i*6+1
-        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L / 2 * i, 4 * gv.det, 0))  # i*6+2
+        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L / 2 * (2*i-1), -gv.A, 0))  # i*6
+        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L / 2 * (2*i-1), gv.det, 0))  # i*6+1
+        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L / 2 * (2*i-1), 4 * gv.det, 0))  # i*6+2
 
         modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L * i, 0, 0))  # i*6+3
         modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L * i, gv.det, 0))  # i*6+4
@@ -32,9 +33,9 @@ def writetridot(modelfile):
     modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in, gv.det, gv.width))  # 4
     modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in, 4 * gv.det, gv.width))  # 5
     for i in range(1, gv.wnum + 1):
-        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L / 2 * i, -gv.A, gv.width))  # i*6
-        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L / 2 * i, gv.det, gv.width))  # i*6+1
-        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L / 2 * i, 4 * gv.det, gv.width))  # i*6+2
+        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L / 2 * (2*i-1), -gv.A, gv.width))  # i*6
+        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L / 2 * (2*i-1), gv.det, gv.width))  # i*6+1
+        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L / 2 * (2*i-1), 4 * gv.det, gv.width))  # i*6+2
 
         modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L * i, 0, gv.width))  # i*6+3
         modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L * i, gv.det, gv.width))  # i*6+4
@@ -52,15 +53,15 @@ def writerecdot(modelfile):
     modelfile.write('(%10.8f %10.8f %10.8f)\n' % (0, 4 * gv.det, 0))  # 2
 
     for i in range(1, gv.wnum + 1):
-        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L / 4 * i, -gv.A, 0))  # i*8-5
-        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L / 4 * i, 0, 0))  # i*8-4
-        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L / 4 * i, gv.det, 0))  # i*8-3
-        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L / 4 * i, 4 * gv.det, 0))  # i*8-2
+        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L / 4 * (4*i-3), -gv.A, 0))  # i*8-5
+        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L / 4 * (4*i-3), 0, 0))  # i*8-4
+        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L / 4 * (4*i-3), gv.det, 0))  # i*8-3
+        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L / 4 * (4*i-3), 4 * gv.det, 0))  # i*8-2
 
-        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L * 3 / 4 * i, -gv.A, 0))  # i*8-1
-        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L * 3 / 4 * i, 0, 0))  # i*8
-        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L * 3 / 4 * i, gv.det, 0))  # i*8+1
-        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L * 3 / 4 * i, 4 * gv.det, 0))  # i*8+2
+        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L / 4 * (4*i-1), -gv.A, 0))  # i*8-1
+        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L / 4 * (4*i-1), 0, 0))  # i*8
+        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L / 4 * (4*i-1), gv.det, 0))  # i*8+1
+        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L / 4 * (4*i-1), 4 * gv.det, 0))  # i*8+2
 
     modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L_out + gv.L * gv.wnum, 0, 0))  # wnum*8+3
     modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L_out + gv.L * gv.wnum, gv.det, 0))  # wnum*8+4
@@ -71,15 +72,15 @@ def writerecdot(modelfile):
     modelfile.write('(%10.8f %10.8f %10.8f)\n' % (0, 4 * gv.det, gv.width))  # 2
 
     for i in range(1, gv.wnum + 1):
-        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L / 4 * i, -gv.A, gv.width))  # i*8-5
-        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L / 4 * i, 0, gv.width))  # i*8-4
-        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L / 4 * i, gv.det, gv.width))  # i*8-3
-        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L / 4 * i, 4 * gv.det, gv.width))  # i*8-2
+        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L / 4 * (4*i-3), -gv.A, gv.width))  # i*8-5
+        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L / 4 * (4*i-3), 0, gv.width))  # i*8-4
+        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L / 4 * (4*i-3), gv.det, gv.width))  # i*8-3
+        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L / 4 * (4*i-3), 4 * gv.det, gv.width))  # i*8-2
 
-        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L * 3 / 4 * i, -gv.A, gv.width))  # i*8-1
-        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L * 3 / 4 * i, 0, gv.width))  # i*8
-        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L * 3 / 4 * i, gv.det, gv.width))  # i*8+1
-        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L * 3 / 4 * i, 4 * gv.det, gv.width))  # i*8+2
+        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L / 4 * (4*i-1), -gv.A, gv.width))  # i*8-1
+        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L / 4 * (4*i-1), 0, gv.width))  # i*8
+        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L / 4 * (4*i-1), gv.det, gv.width))  # i*8+1
+        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L / 4 * (4*i-1), 4 * gv.det, gv.width))  # i*8+2
 
     modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L_out + gv.L * gv.wnum, 0, gv.width))  # wnum*8+3
     modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L_out + gv.L * gv.wnum, gv.det, gv.width))  # wnum*8+4
@@ -87,11 +88,10 @@ def writerecdot(modelfile):
             '(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L_out + gv.L * gv.wnum, 4 * gv.det, gv.width))  # wnum*8+5
 
 
-def writesindot(modelfile):
-    pass
-
-
 def writeblockmesh(modelLocation):
+    if gv.structure == 'sin':
+        writesinmesh(modelLocation)
+        return
     with open(modelLocation, 'w') as modelfile:
         # define the 'blockMeshDict' document
         modelfile.write('/*--------------------------------*- C++ -*----------------------------------  \n')
@@ -120,9 +120,6 @@ def writeblockmesh(modelLocation):
 
         if gv.structure == 'rec':
             writerecdot(modelfile)
-
-        if gv.structure == 'sin':
-            writesindot(modelfile)
 
         modelfile.write(');\n')
         modelfile.write('blocks \n')
@@ -251,9 +248,9 @@ def writeblockmesh(modelLocation):
             modelfile.write('    patch airoutlet\n')
         modelfile.write('    (\n')
         if gv.structure == 'tri':
-            modelfile.write('        (1 2 %d %d)\n' % (opch + 1, opch))
+            modelfile.write('        (1 2 %d %d)\n' % (opch + 2, opch+1))
         if gv.structure == 'rec':
-            modelfile.write('        (1 2 %d %d)\n' % (opch + 1, opch))
+            modelfile.write('        (1 2 %d %d)\n' % (opch + 2, opch+1))
         modelfile.write('    )\n')
 
         if gv.samedirecasflow:
@@ -281,7 +278,7 @@ def writeblockmesh(modelLocation):
 
         if gv.structure == 'rec':
             opch = gv.wnum * 8 + 6
-            modelfile.write('        (2 6 %d %d)\n' % (6 + opch, opch))
+            modelfile.write('        (2 6 %d %d)\n' % (6 + opch, 2+opch))
 
             for i in range(1, 2 * gv.wnum):
                 a0 = 4 * (i - 1) + 4 + 2

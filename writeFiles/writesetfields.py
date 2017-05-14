@@ -29,6 +29,7 @@ def writesetfields(setFieldsLocation):
         setfields.write('(\n')
         setfields.write('    boxToCell\n')
         setfields.write('    {\n')
+        print(gv.A)
         setfields.write('        box (0 %10.8f %10.8f) (%10.8f %10.8f %10.8f);\n' % (
         -gv.A, -gv.width, gv.L_in + gv.L_out + gv.wnum * gv.L, gv.det,
         gv.width))

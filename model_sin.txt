@@ -1,0 +1,330 @@
+% find the directory
+%cd 
+clear;clc;format long;
+rn=20;
+angle=[30];
+for j=1:1
+Re=rn(j); %Reynolds number
+
+A=0.001; % hight of the corrugation
+L=0.01; % length of the corrugation
+v=10e-06; %kinematically viscosity
+g=9.81; % gravity acceleration
+ang=angle/180*pi; % incliend angle
+% calculate the thickness
+det=(3*v^2*Re/(g*sin(ang)))^(1/3);
+
+x=0:10e-3/256:30e-3;%提取256个点
+y=1e-3*cos(2*pi/10e-3.*x)-1e-3;
+n=length(x);
+z=zeros(n,1);
+curve1=[x' y' z];
+
+
+y1=y+det;
+curve2=[x' y1' z];
+
+%define the top
+y2=y+det*5;
+curve3=[x' y2' z];
+
+curve1z=[curve1(:,1:2) curve1(:,3)+1e-4];
+curve2z=[curve2(:,1:2) curve2(:,3)+1e-4];
+curve3z=[curve3(:,1:2) curve3(:,3)+1e-4];
+%define the corrugations in the bottom
+
+modelLocation=sprintf('r%da30/constant/polyMesh/blockMeshDict',Re);
+uLocation=sprintf('r%da30/0/U',Re);
+setFieldsLocation=sprintf('r%da30/system/setFieldsDict',Re);
+gLocation=sprintf('r%da30/constant/g',Re);
+% define the 'blockMeshDict' document
+
+s1=fopen(modelLocation,'wt');
+fprintf(s1,'/*--------------------------------*- C++ -*----------------------------------  \n');
+fprintf(s1,'| =========                 |                                                 |\n');
+fprintf(s1,'| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |\n');
+fprintf(s1,'|  \\    /   O peration     | Version:  1.7.1                                 |\n');
+fprintf(s1,'|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |\n');
+fprintf(s1,'|    \\/     M anipulation  |                                                 |\n');
+fprintf(s1,'  ---------------------------------------------------------------------------*/\n');
+fprintf(s1,'FoamFile\n');
+fprintf(s1,'{\n');
+fprintf(s1,'    version     2.0;\n');
+fprintf(s1,'    format      ascii;\n');
+fprintf(s1,'    class       dictionary;\n');
+fprintf(s1,'    object      blockMeshDict;\n');
+fprintf(s1,'}\n');
+fprintf(s1,'// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //\n');
+fprintf(s1,'\n');
+fprintf(s1,'convertToMeters %10.8f;\n',1);
+fprintf(s1,'\n');
+fprintf(s1,'vertices\n');
+fprintf(s1,'(\n');       
+fprintf(s1,'(%10.8f %10.8f %10.8f)\n',0,0,0);%0
+fprintf(s1,'(%10.8f %10.8f %10.8f)\n',0,det,0);%1
+fprintf(s1,'(%10.8f %10.8f %10.8f)\n',0,5*det,0);%2
+
+fprintf(s1,'(%10.8f %10.8f %10.8f)\n',0.03,0,0);%3
+fprintf(s1,'(%10.8f %10.8f %10.8f)\n',0.03,det,0);%4
+fprintf(s1,'(%10.8f %10.8f %10.8f)\n',0.03,5*det,0);%5
+
+
+fprintf(s1,'(%10.8f %10.8f %10.8f)\n',0,0,0.0001);%6
+fprintf(s1,'(%10.8f %10.8f %10.8f)\n',0,det,0.0001);%7
+fprintf(s1,'(%10.8f %10.8f %10.8f)\n',0,5*det,0.0001);%8
+
+fprintf(s1,'(%10.8f %10.8f %10.8f)\n',0.03,0,0.0001);%9
+fprintf(s1,'(%10.8f %10.8f %10.8f)\n',0.03,det,0.0001);%10
+fprintf(s1,'(%10.8f %10.8f %10.8f)\n',0.03,5*det,0.0001);%11
+
+
+fprintf(s1,');\n');
+
+fprintf(s1,'blocks \n');
+fprintf(s1,'(\n');
+
+fprintf(s1,'     hex (0 3 4 1 6 9 10 7) (100 20 1) simpleGrading (1 1 1)\n');
+fprintf(s1,'     hex (1 4 5 2 7 10 11 8) (100 80 1) simpleGrading (1 1 1)\n');
+
+
+
+fprintf(s1,');\n');
+fprintf(s1,'\n');
+
+
+
+fprintf(s1,'edges \n');
+fprintf(s1,'(\n');
+
+fprintf(s1,'spline 0 3\n');%固定边
+fprintf(s1,'(\n');
+for i=1:n
+    fprintf(s1, '( %10.8f %10.8f %10.8f) \n',curve1(i,:));
+end
+fprintf(s1,')\n');
+
+fprintf(s1,'spline 1 4\n');%气液边界
+fprintf(s1,'(\n');
+for i=1:n
+    fprintf(s1, '( %10.8f %10.8f %10.8f) \n',curve2(i,:));
+end
+fprintf(s1,')\n');
+fprintf(s1,'spline 2 5\n');%气相边界
+fprintf(s1,'(\n');
+for i=1:n
+    fprintf(s1, '( %10.8f %10.8f %10.8f) \n',curve3(i,:));
+end
+fprintf(s1,')\n');
+fprintf(s1,'spline 6 9\n');
+fprintf(s1,'(\n');
+for i=1:n
+    fprintf(s1, '( %10.8f %10.8f %10.8f) \n',curve1z(i,:));
+end
+fprintf(s1,')\n');
+fprintf(s1,'spline 7 10\n');
+fprintf(s1,'(\n');
+for i=1:n
+    fprintf(s1, '( %10.8f %10.8f %10.8f) \n',curve2z(i,:));
+end
+fprintf(s1,')\n');
+fprintf(s1,'spline 8 11\n');
+fprintf(s1,'(\n');
+for i=1:n
+    fprintf(s1, '( %10.8f %10.8f %10.8f) \n',curve3z(i,:));
+end
+fprintf(s1,')\n');
+
+
+fprintf(s1,');\n');
+
+fprintf(s1,'\n');
+fprintf(s1,'patches \n');
+
+fprintf(s1,'(\n');
+
+fprintf(s1,'    patch liquidinlet\n');
+fprintf(s1,'    (\n');
+fprintf(s1,'        (0 1 7 6)\n');
+fprintf(s1,'    )\n');
+
+fprintf(s1,'    patch liquidoutlet\n');
+fprintf(s1,'    (\n');
+fprintf(s1,'        (3 4 10 9)\n');
+
+fprintf(s1,'    )\n');
+
+fprintf(s1,'    wall fixedwall\n');
+fprintf(s1,'    (\n');
+fprintf(s1,'        (0 3 9 6)\n');
+fprintf(s1,'    )\n');
+
+fprintf(s1,'    patch airinlet\n');
+fprintf(s1,'    (\n');
+fprintf(s1,'        (1 2 8 7)\n');
+fprintf(s1,'    )\n');
+
+fprintf(s1,'    patch airoutlet\n');
+fprintf(s1,'    (\n');
+fprintf(s1,'        (4 5 11 10)\n');
+
+fprintf(s1,'    )\n');
+
+fprintf(s1,'    patch airatmosphere\n');
+fprintf(s1,'    (\n');
+fprintf(s1,'        (2 5 11 8)\n');
+fprintf(s1,'    )\n');
+
+fprintf(s1,'    empty frontAndBackPlanes\n');
+fprintf(s1,'    (\n');
+fprintf(s1,'        (0 3 4 1)\n');
+fprintf(s1,'        (1 4 5 2)\n');
+
+fprintf(s1,'    )\n');
+
+fprintf(s1,');\n');
+fprintf(s1,'mergePatchPairs\n');
+fprintf(s1,'(\n');
+
+fprintf(s1,');\n');
+fprintf(s1,'// ************************************************************************* //\n');
+fclose(s1);
+
+% define the 'U' document
+uave=det^2*g*sin(ang)/v/3;
+umax=uave*1.5;
+aa=1/det;
+ab=g*sin(ang)*det^2/v;
+
+%begin to write the txt into the document
+
+s1=fopen(uLocation,'wt');
+fprintf(s1,'/*--------------------------------*- C++ -*----------------------------------  \n');
+fprintf(s1,'| =========                 |                                                 |\n');
+fprintf(s1,'| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |\n');
+fprintf(s1,'|  \\    /   O peration     | Version:  1.7.1                                 |\n');
+fprintf(s1,'|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |\n');
+fprintf(s1,'|    \\/     M anipulation  |                                                 |\n');
+fprintf(s1,'  ---------------------------------------------------------------------------*/\n');
+fprintf(s1,'FoamFile\n');
+fprintf(s1,'{\n');
+fprintf(s1,'    version     2.0;\n');
+fprintf(s1,'    format      ascii;\n');
+fprintf(s1,'    class       volVectorField;\n');
+fprintf(s1,'    location    "0";\n');
+fprintf(s1,'    object      U;\n');
+fprintf(s1,'}\n');
+fprintf(s1,'// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //\n');
+fprintf(s1,'\n');
+fprintf(s1,'dimensions      [0 1 -1 0 0 0 0];\n');
+fprintf(s1,'\n');
+fprintf(s1,'internalField   uniform (%10.6f 0 0);\n',0.7*uave);
+fprintf(s1,'\n');
+fprintf(s1,'boundaryField\n');
+fprintf(s1,'{\n');
+fprintf(s1,'    liquidinlet\n');
+fprintf(s1,'    {\n');
+
+fprintf(s1,'        type            fixedValue;\n');
+fprintf(s1,'        value           uniform (%10.6f 0 0);\n',uave);
+fprintf(s1,'    }\n');
+
+fprintf(s1,'    liquidoutlet\n');
+fprintf(s1,'    {\n');
+
+fprintf(s1,'        type            zeroGradient;\n');
+fprintf(s1,'    }\n');
+fprintf(s1,'    fixedwall\n');
+fprintf(s1,'    {\n');
+fprintf(s1,'        type            fixedValue;\n');
+fprintf(s1,'        value           uniform (0 0 0);\n');
+fprintf(s1,'    }\n');
+fprintf(s1,'    airatmosphere\n');
+fprintf(s1,'    {\n');
+fprintf(s1,'        type            pressureInletOutletVelocity;\n');
+fprintf(s1,'        value           uniform (0 0 0);\n');
+fprintf(s1,'    }\n');
+fprintf(s1,'    airinlet\n');
+fprintf(s1,'    {\n');
+fprintf(s1,'        type            zeroGradient;\n');
+fprintf(s1,'    }\n');
+fprintf(s1,'    airoutlet\n');
+fprintf(s1,'    {\n');
+fprintf(s1,'        type            zeroGradient;\n');
+fprintf(s1,'    }\n');
+
+    fprintf(s1,' frontAndBackPlanes\n');
+    fprintf(s1,' {\n');
+      fprintf(s1,'   type            empty;\n');
+    fprintf(s1,' }\n');
+
+
+
+fprintf(s1,'}\n');
+fprintf(s1,'\n');
+fprintf(s1,'// ************************************************************************* //\n');
+fclose(s1);
+
+
+
+%begin to write the txt into the document
+
+s1=fopen(setFieldsLocation,'wt');
+fprintf(s1,'/*--------------------------------*- C++ -*----------------------------------  \n');
+fprintf(s1,'| =========                 |                                                 |\n');
+fprintf(s1,'| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |\n');
+fprintf(s1,'|  \\    /   O peration     | Version:  1.7.1                                 |\n');
+fprintf(s1,'|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |\n');
+fprintf(s1,'|    \\/     M anipulation  |                                                 |\n');
+fprintf(s1,'  ---------------------------------------------------------------------------*/\n');
+fprintf(s1,'FoamFile\n');
+fprintf(s1,'{\n');
+fprintf(s1,'    version     2.0;\n');
+fprintf(s1,'    format      ascii;\n');
+fprintf(s1,'    class       dictionary;\n');
+fprintf(s1,'    location    "system";\n');
+fprintf(s1,'    object      setFieldsDict;\n');
+fprintf(s1,'}\n');
+fprintf(s1,'// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //\n');
+fprintf(s1,'\n');
+fprintf(s1,'defaultFieldValues\n');
+fprintf(s1,'(\n');
+fprintf(s1,'    volScalarFieldValue alpha1 0\n');
+fprintf(s1,');\n');
+fprintf(s1,'\n');
+fprintf(s1,'regions\n');
+fprintf(s1,'(\n');
+fprintf(s1,'    boxToCell\n');
+fprintf(s1,'    {\n');
+fprintf(s1,'        box (0 -0.002 -1) (0.03 %10.8f 1);\n',det);
+fprintf(s1,'        fieldValues\n');
+fprintf(s1,'        (\n');
+fprintf(s1,'            volScalarFieldValue alpha1 1\n');
+fprintf(s1,'        );\n');
+fprintf(s1,'    }\n');
+fprintf(s1,');\n');
+fprintf(s1,'// ************************************************************************* //\n');
+fclose(s1);
+
+s1=fopen(gLocation,'wt');
+fprintf(s1,'/*--------------------------------*- C++ -*----------------------------------  \n');
+fprintf(s1,'| =========                 |                                                 |\n');
+fprintf(s1,'| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |\n');
+fprintf(s1,'|  \\    /   O peration     | Version:  1.7.1                                 |\n');
+fprintf(s1,'|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |\n');
+fprintf(s1,'|    \\/     M anipulation  |                                                 |\n');
+fprintf(s1,'  ---------------------------------------------------------------------------*/\n');
+fprintf(s1,'FoamFile\n');
+fprintf(s1,'{\n');
+fprintf(s1,'version     2.0;\n');
+fprintf(s1,'    format      ascii;\n');
+fprintf(s1,'    class       uniformDimensionedVectorField;\n');
+fprintf(s1,'    location    "constant";\n');
+fprintf(s1,'    object      g;\n');
+fprintf(s1,'}\n');
+fprintf(s1,'// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //\n');
+fprintf(s1,'dimensions      [0 1 -2 0 0 0 0];\n');
+fprintf(s1,'value           (%10.8f  %10.8f 0);\n',g*sin(ang),-g*cos(ang));
+fprintf(s1,'// ************************************************************************* //\n');
+
+end
+
