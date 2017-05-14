@@ -43,7 +43,7 @@ def writetridot(modelfile):
     modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L_out + gv.L * gv.wnum, 0, gv.width))  # wnum*6+6
     modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L_out + gv.L * gv.wnum, gv.det, gv.width))  # wnum*6+7
     modelfile.write(
-        '(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L_out + gv.L * gv.wnum, 4 * gv.det, gv.width))  # wnum*6+8
+            '(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L_out + gv.L * gv.wnum, 4 * gv.det, gv.width))  # wnum*6+8
 
 
 def writerecdot(modelfile):
@@ -84,7 +84,7 @@ def writerecdot(modelfile):
     modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L_out + gv.L * gv.wnum, 0, gv.width))  # wnum*8+3
     modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L_out + gv.L * gv.wnum, gv.det, gv.width))  # wnum*8+4
     modelfile.write(
-        '(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L_out + gv.L * gv.wnum, 4 * gv.det, gv.width))  # wnum*8+5
+            '(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L_out + gv.L * gv.wnum, 4 * gv.det, gv.width))  # wnum*8+5
 
 
 def writesindot(modelfile):
@@ -129,7 +129,7 @@ def writeblockmesh(modelLocation):
         modelfile.write('(\n')
         dmi = gv.det / 12
         if gv.structure == 'tri':
-            opch=gv.wnum * 6 + 9
+            opch = gv.wnum * 6 + 9
             for i in range(0, 2 * gv.wnum + 2):
                 CELLS = math.ceil(gv.L / 2 / dmi)
                 if i == 0:
@@ -137,27 +137,53 @@ def writeblockmesh(modelLocation):
                 if i == 2 * gv.wnum + 1:
                     CELLS = math.ceil(gv.L_out / dmi / 2)
                 modelfile.write('     hex (%d %d %d %d %d %d %d %d) (%d 12 1) simpleGrading (1 1 1)\n' % (
-                i * 3, (i + 1) * 3, (i + 1) * 3 + 1, i * 3 + 1, i * 3 + gv.wnum * 6 + 9, (i + 1) * 3 + gv.wnum * 6 + 9,
-                (i + 1) * 3 + 1 + gv.wnum * 6 + 9, i * 3 + 1 + gv.wnum * 6 + 9, CELLS))
+                    i * 3, (i + 1) * 3, (i + 1) * 3 + 1, i * 3 + 1, i * 3 + opch,
+                    (i + 1) * 3 + opch,
+                    (i + 1) * 3 + 1 + opch, i * 3 + 1 + opch, CELLS))
                 modelfile.write('     hex (%d %d %d %d %d %d %d %d) (%d 36 1) simpleGrading (1 1 1)\n' % (
-                i * 3 + 1, (i + 1) * 3 + 1, (i + 1) * 3 + 1 + 1, i * 3 + 1 + 1, i * 3 + gv.wnum * 6 + 9 + 1,
-                (i + 1) * 3 + gv.wnum * 6 + 9 + 1, (i + 1) * 3 + 1 + gv.wnum * 6 + 9 + 1,
-                i * 3 + 1 + gv.wnum * 6 + 9 + 1, CELLS))
+                    i * 3 + 1, (i + 1) * 3 + 1, (i + 1) * 3 + 1 + 1, i * 3 + 1 + 1, i * 3 + opch + 1,
+                    (i + 1) * 3 + opch + 1, (i + 1) * 3 + 1 + opch + 1,
+                    i * 3 + 1 + opch + 1, CELLS))
 
         if gv.structure == 'rec':
-            opch=gv.wnum*8+6
-            modelfile.write('     hex (0 4 5 1 %d %d %d %d) (%d 12 1) simpleGrading (1 1 1)\n' % (opch,opch+4,opch+5,opch+1,math.ceil(gv.L_in / dmi / 2)))
-            modelfile.write('     hex (1 5 6 2 %d %d %d %d) (%d 36 1) simpleGrading (1 1 1)\n' % (opch+1,opch+5,opch+6,opch+2,math.ceil(gv.L_in / dmi / 2)))
-            
-            CELLS = math.ceil(gv.L /2/ dmi)
-            for i in range(1,2*gv.wnum):
-                if i%2==1:
-                    modelfile.write('     hex (%d %d %d %d %d %d %d %d) (%d %d 1) simpleGrading (1 1 1)\n' % (4*(i-1)+3,4*(i-1)+3+4,4*(i-1)+3+4+1,4*(i-1)+3+1,4*(i-1)+3+opch,4*(i-1)+3+4+opch,4*(i-1)+3+4+1+opch,4*(i-1)+3+1+opch,CELLS,math.ceil(gv.A / dmi)))
-                modelfile.write('     hex (%d %d %d %d %d %d %d %d) (%d 12 1) simpleGrading (1 1 1)\n' % (4*(i-1)+4,4*(i-1)+4+4,4*(i-1)+4+4+1,4*(i-1)+4+1,4*(i-1)+4+opch,4*(i-1)+4+4+opch,4*(i-1)+4+4+1+opch,4*(i-1)+4+1+opch,CELLS))
-                modelfile.write('     hex (%d %d %d %d %d %d %d %d) (%d 36 1) simpleGrading (1 1 1)\n' % (4*(i-1)+5,4*(i-1)+5+4,4*(i-1)+5+4+1,4*(i-1)+5+1,4*(i-1)+5+opch,4*(i-1)+5+4+opch,4*(i-1)+5+4+1+opch,4*(i-1)+5+1+opch,CELLS))
-            
-            modelfile.write('     hex (%d %d %d %d %d %d %d %d) (%d 12 1) simpleGrading (1 1 1)\n' % (4*(2*gv.wnum-1)+4,4*(2*gv.wnum-1)+4+3,4*(2*gv.wnum-1)+4+3+1,4*(2*gv.wnum-1)+4+1,4*(2*gv.wnum-1)+4+opch,4*(2*gv.wnum-1)+4+3+opch,4*(2*gv.wnum-1)+4+3+1+opch,4*(2*gv.wnum-1)+4+1+opch,math.ceil(gv.L_out / dmi / 2)))
-            modelfile.write('     hex (%d %d %d %d %d %d %d %d) (%d 36 1) simpleGrading (1 1 1)\n' % (4*(2*gv.wnum-1)+4+1,4*(2*gv.wnum-1)+4+3+1,4*(2*gv.wnum-1)+4+3+1+1,4*(2*gv.wnum-1)+4+1+1,4*(2*gv.wnum-1)+4+opch+1,4*(2*gv.wnum-1)+4+3+opch+1,4*(2*gv.wnum-1)+4+3+1+opch+1,4*(2*gv.wnum-1)+4+1+opch+1,math.ceil(gv.L_out / dmi / 2)))
+            opch = gv.wnum * 8 + 6
+            modelfile.write('     hex (0 4 5 1 %d %d %d %d) (%d 12 1) simpleGrading (1 1 1)\n' % (
+                opch, opch + 4, opch + 5, opch + 1, math.ceil(gv.L_in / dmi / 2)))
+            modelfile.write('     hex (1 5 6 2 %d %d %d %d) (%d 36 1) simpleGrading (1 1 1)\n' % (
+                opch + 1, opch + 5, opch + 6, opch + 2, math.ceil(gv.L_in / dmi / 2)))
+
+            CELLS = math.ceil(gv.L / 2 / dmi)
+            for i in range(1, 2 * gv.wnum):
+                if i % 2 == 1:
+                    a0 = 4 * (i - 1) + 3
+                    modelfile.write('     hex (%d %d %d %d %d %d %d %d) (%d %d 1) simpleGrading (1 1 1)\n' % (
+                        a0, a0 + 4, a0 + 4 + 1, a0 + 1,
+                        a0 + opch, a0 + 4 + opch, a0 + 4 + 1 + opch,
+                        a0 + 1 + opch, CELLS, math.ceil(gv.A / dmi)))
+
+                a0 = 4 * (i - 1) + 4
+                modelfile.write('     hex (%d %d %d %d %d %d %d %d) (%d 12 1) simpleGrading (1 1 1)\n' % (
+                    a0, a0 + 4, a0 + 4 + 1, a0 + 1,
+                    a0 + opch, a0 + 4 + opch, a0 + 4 + 1 + opch,
+                    a0 + 1 + opch, CELLS))
+
+                a0 = 4 * (i - 1) + 5
+                modelfile.write('     hex (%d %d %d %d %d %d %d %d) (%d 36 1) simpleGrading (1 1 1)\n' % (
+                    a0, a0 + 4, a0 + 4 + 1, a0 + 1,
+                    a0 + opch, a0 + 4 + opch, a0 + 4 + 1 + opch,
+                    a0 + 1 + opch, CELLS))
+
+            a0 = 4 * (2 * gv.wnum - 1) + 4
+            modelfile.write('     hex (%d %d %d %d %d %d %d %d) (%d 12 1) simpleGrading (1 1 1)\n' % (
+                a0, a0 + 3, a0 + 3 + 1,
+                a0 + 1, a0 + opch, a0 + 3 + opch,
+                a0 + 3 + 1 + opch, a0 + 1 + opch,
+                math.ceil(gv.L_out / dmi / 2)))
+            modelfile.write('     hex (%d %d %d %d %d %d %d %d) (%d 36 1) simpleGrading (1 1 1)\n' % (
+                a0 + 1, a0 + 3 + 1, a0 + 3 + 1 + 1,
+                a0 + 1 + 1, a0 + opch + 1,
+                a0 + 3 + opch + 1, a0 + 3 + 1 + opch + 1,
+                a0 + 1 + opch + 1, math.ceil(gv.L_out / dmi / 2)))
 
         modelfile.write(');\n')
         modelfile.write('\n')
@@ -174,44 +200,95 @@ def writeblockmesh(modelLocation):
         modelfile.write('    patch liquidinlet\n')
         modelfile.write('    (\n')
         if gv.structure == 'tri':
-            modelfile.write('        (0 1 %d %d)\n'%(gv.wnum * 6 + 9+1,gv.wnum * 6 + 9))
+            modelfile.write('        (0 1 %d %d)\n' % (opch + 1, opch))
         if gv.structure == 'rec':
-            modelfile.write('        (0 1 %d %d)\n'%(gv.wnum*8+6+1,gv.wnum*8+6))
+            modelfile.write('        (0 1 %d %d)\n' % (opch + 1, opch))
 
         modelfile.write('    )\n')
-?
+
         modelfile.write('    patch liquidoutlet\n')
         modelfile.write('    (\n')
         if gv.structure == 'tri':
-            modelfile.write('        (%d %d %d %d)\n'%((2*gv.wnum+2) * 3,(2 * gv.wnum + 2) * 3+1,(2 * gv.wnum + 2) * 3+opch+1,(2 * gv.wnum + 2) * 3)+opch)
-            modelfile.write('        (%d %d %d %d)\n'%((2*gv.wnum+2) * 3+1,(2 * gv.wnum + 2) * 3+1+1,(2 * gv.wnum + 2) * 3+opch+1+1,(2 * gv.wnum + 2) * 3)+opch+1)
+            a0 = (2 * gv.wnum + 2) * 3
+            modelfile.write('        (%d %d %d %d)\n' % (a0, a0 + 1, a0 + opch + 1, a0 + opch))
 
         if gv.structure == 'rec':
-            modelfile.write('        (%d %d %d %d)\n'%((2*gv.wnum+2) * 3,(2 * gv.wnum + 2) * 3+1,(2 * gv.wnum + 2) * 3+opch+1,(2 * gv.wnum + 2) * 3)+opch)
-            modelfile.write('        (%d %d %d %d)\n'%((2*gv.wnum+2) * 3+1,(2 * gv.wnum + 2) * 3+1+1,(2 * gv.wnum + 2) * 3+opch+1+1,(2 * gv.wnum + 2) * 3)+opch+1)
+            a0 = 4 * (2 * gv.wnum - 1) + 4 + 3
+            modelfile.write('        (%d %d %d %d)\n' % (a0, a0 + 1, a0 + opch + 1, a0 + opch))
+
         modelfile.write('    )\n')
 
         modelfile.write('    wall fixedwall \n')
         modelfile.write('    (\n')
-        modelfile.write('        (0 3 12 9)\n')
-        modelfile.write('        (3 6 15 12)\n')
+        if gv.structure == 'tri':
+            opch = gv.wnum * 6 + 9
+            for i in range(0, 2 * gv.wnum + 2):
+                a0 = 3 * i
+                modelfile.write('        (%d %d %d %d)\n' % (a0, a0 + 3, a0 + 3 + opch, a0 + opch))
+
+        if gv.structure == 'rec':
+            opch = gv.wnum * 8 + 6
+            modelfile.write('        (0 4 %d %d)\n' % (4 + opch, opch))
+
+            for i in range(1, 2 * gv.wnum):
+                if i % 2 == 1:
+                    a0 = 4 * (i - 1) + 3
+                    modelfile.write('        (%d %d %d %d)\n' % (a0, a0 + 1, a0 + 1 + opch, a0 + opch))
+                    modelfile.write('        (%d %d %d %d)\n' % (a0, a0 + 4, a0 + 4 + opch, a0 + opch))
+                    modelfile.write('        (%d %d %d %d)\n' % (a0 + 4, a0 + 4 + 1, a0 + 4 + 1 + opch, a0 + 4 + opch))
+                else:
+                    a0 = 4 * (i - 1) + 4
+                    modelfile.write('        (%d %d %d %d)\n' % (a0, a0 + 4, a0 + 4 + opch, a0 + opch))
+
+            a0 = 4 * (2 * gv.wnum - 1) + 4
+            modelfile.write('        (%d %d %d %d)\n' % (a0, a0 + 3, a0 + 3 + opch, a0 + opch))
 
         modelfile.write('    )\n')
-
-        modelfile.write('    patch airinlet\n')
+        if gv.samedirecasflow:
+            # same direction as liquid inlet
+            modelfile.write('    patch airinlet\n')
+        else:
+            modelfile.write('    patch airoutlet\n')
         modelfile.write('    (\n')
-        modelfile.write('        (1 2 11 10)\n')
+        if gv.structure == 'tri':
+            modelfile.write('        (1 2 %d %d)\n' % (opch + 1, opch))
+        if gv.structure == 'rec':
+            modelfile.write('        (1 2 %d %d)\n' % (opch + 1, opch))
         modelfile.write('    )\n')
 
-        modelfile.write('    patch airoutlet\n')
+        if gv.samedirecasflow:
+            modelfile.write('    patch airoutlet\n')
+        else:
+            modelfile.write('    patch airinlet\n')
         modelfile.write('    (\n')
-        modelfile.write('        (7 8 17 16)\n')
+
+        if gv.structure == 'tri':
+            a0 = (2 * gv.wnum + 2) * 3 + 1
+            modelfile.write('        (%d %d %d %d)\n' % (a0, a0 + 1, a0 + opch + 1, a0 + opch))
+
+        if gv.structure == 'rec':
+            a0 = 4 * (2 * gv.wnum - 1) + 4 + 3 + 1
+            modelfile.write('        (%d %d %d %d)\n' % (a0, a0 + 1, a0 + opch + 1, a0 + opch))
         modelfile.write('    )\n')
 
         modelfile.write('    patch airatmosphere \n')
         modelfile.write('    (\n')
-        modelfile.write('        (2 5 14 11)\n')
-        modelfile.write('        (5 8 17 14)\n')
+        if gv.structure == 'tri':
+            opch = gv.wnum * 6 + 9
+            for i in range(0, 2 * gv.wnum + 2):
+                a0 = 3 * i + 2
+                modelfile.write('        (%d %d %d %d)\n' % (a0, a0 + 3, a0 + 3 + opch, a0 + opch))
+
+        if gv.structure == 'rec':
+            opch = gv.wnum * 8 + 6
+            modelfile.write('        (2 6 %d %d)\n' % (6 + opch, opch))
+
+            for i in range(1, 2 * gv.wnum):
+                a0 = 4 * (i - 1) + 4 + 2
+                modelfile.write('        (%d %d %d %d)\n' % (a0, a0 + 4, a0 + 4 + opch, a0 + opch))
+
+            a0 = 4 * (2 * gv.wnum - 1) + 4 + 2
+            modelfile.write('        (%d %d %d %d)\n' % (a0, a0 + 3, a0 + 3 + opch, a0 + opch))
         modelfile.write('    )\n')
 
         modelfile.write('    empty frontAndBackPlanes\n')

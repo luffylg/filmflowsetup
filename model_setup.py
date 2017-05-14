@@ -58,7 +58,7 @@ if __name__ == '__main__':
         copy_model("h")
     # change wavenums
     basedir = os.path.join(bd, 'wavenums')
-    for i in range(3, 6):
+    for i in range(2, 5):
         gv.wnum = i
         pre_process()
         copy_model("wnum")

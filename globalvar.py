@@ -13,3 +13,4 @@ L_out=float(getconfig("structure", "L_out"))
 width=float(getconfig("structure", "width"))
 structure=getconfig("structure", "structure")
 realfiledir=''
+samedirecasflow=True
