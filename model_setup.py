@@ -5,6 +5,7 @@ import shutil
 from writeFiles.writeblockMesh import writeblockmesh
 from writeFiles.writecommand import writecommand
 from writeFiles.writegfile import writegfile
+from writeFiles.writesamplefile import writesample
 from writeFiles.writesetfields import writesetfields
 from writeFiles.writeudocument import writeudocument
 import globalvar as gv
@@ -38,10 +39,12 @@ def writefiles(filename):
     uLocation = os.path.join(gv.basedir, filename, '0', 'U')
     setFieldsLocation = os.path.join(gv.basedir, filename, 'system', 'setFieldsDict')
     gLocation = os.path.join(gv.basedir, filename, 'constant', 'g')
+    sampleLocation = os.path.join(gv.basedir, filename, 'system', 'sampleDict')
     writeblockmesh(modelLocation)
     writeudocument(uLocation)
     writesetfields(setFieldsLocation)
     writegfile(gLocation)
+    # writesample(sampleLocation)
 
 
 def do(method):
@@ -49,17 +52,19 @@ def do(method):
     # change Re in fixed angle
     if method == 'Reang':
         gv.basedir = os.path.join(bd, 'Reang')
-        for i in range(1, 7, 2):
+        for i in [1, 5, 15, 20, 25]:
             gv.Re = i
             pre_process()
             copy_model("Reang")
     if method == 'height':
         # change height of corrugation
         gv.basedir = os.path.join(bd, 'height')
-        for i in range(1, 4):
+        for i in range(1, 5):
             gv.A = i / 1000
-            pre_process()
-            copy_model("h")
+            for j in range(1, 100, 5):
+                gv.Re = j
+                pre_process()
+                copy_model("h")
     if method == 'wavenums':
         # change wavenums
         gv.basedir = os.path.join(bd, 'wavenums')
@@ -72,6 +77,6 @@ def do(method):
 
 if __name__ == '__main__':
     # 一次只能运行一个
-    do('Reang')
-    # do('height')
+    # do('Reang')
+    do('height')
     # do('wavenums')

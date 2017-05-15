@@ -10,11 +10,11 @@ FoamFile
     version     2.0;
     format      ascii;
     class       volScalarField;
-    object      p_rgh;
+    object      alpha;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-dimensions      [1 -1 -2 0 0 0 0];
+dimensions      [0 0 0 0 0 0 0];
 
 internalField   uniform 0;
 
@@ -22,41 +22,40 @@ boundaryField
 {
     liquidinlet
     {
-        type            fixedFluxPressure;
-        value           uniform 0;
+        type            fixedValue;
+        value           uniform 1;
     }
-
     liquidoutlet
     {
-        type            zeroGradient;
-    }
-
-    fixedwall
-    {
-        type            fixedFluxPressure;
+        type            inletOutlet;
+        inletValue      uniform 0;
         value           uniform 0;
     }
-
+    fixedwall
+    {
+        type           constantAlphaContactAngle;
+        theta0         90;
+        limit          gradient;
+        value          uniform 1;
+    }
     airatmosphere
     {
-        type            totalPressure;
-        p0              uniform 0;
-        U               U;
-        phi             phi;
-        rho             rho;
-        psi             none;
-        gamma           1;
+        type            inletOutlet;
+        inletValue      uniform 0;
         value           uniform 0;
     }
     airinlet
     {
-        type            zeroGradient;
+        type            inletOutlet;
+        inletValue      uniform 0;
+        value           uniform 0;
     }
     airoutlet
     {
-        type            zeroGradient;
+        type            inletOutlet;
+        inletValue      uniform 0;
+        value           uniform 0;
     }
-
     frontAndBackPlanes
     {
         type            empty;

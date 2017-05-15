@@ -1,7 +1,7 @@
 /*--------------------------------*- C++ -*----------------------------------  
 | =========                 |                                                 |
 | \      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \    /   O peration     | Version:  2.4.0                                 |
+|  \    /   O peration     | Version:  1.7.1                                 |
 |   \  /    A nd           | Web:      www.OpenFOAM.com                      |
 |    \/     M anipulation  |                                                 |
   ---------------------------------------------------------------------------*/
@@ -17,20 +17,23 @@ FoamFile
 
 dimensions      [0 1 -1 0 0 0 0];
 
-internalField   uniform (  0.121127 0 0);
+internalField   uniform (  0.170718 0 0);
 
 boundaryField
 {
     liquidinlet
     {
         type            groovyBC;
-        variables "dy=(pos().y)*762.284720;vx=0.363381*(dy-0.5*pow(dy,2));";
+        variables "dy=(pos().y)*479.383300;vx=0.512154*(dy-0.5*pow(dy,2));";
         valueExpression "vector(vx,0,0)";
         value           uniform (0 0 0);
     }
     liquidoutlet
     {
-         type            zeroGradient;
+        type            groovyBC;
+        variables "dy=(pos().y)*479.383300;vx=0.512154*(dy-0.5*pow(dy,2));";
+        valueExpression "vector(vx,0,0)";
+        value           uniform (0 0 0);
     }
     fixedwall
     {
@@ -44,11 +47,12 @@ boundaryField
     }
     airinlet
     {
-         type            zeroGradient;
+        type            zeroGradient;
     }
     airoutlet
     {
-         type            zeroGradient;
+        type            fixedValue;
+        value           uniform (0.25607697 0 0);
     }
     frontAndBackPlanes
     {

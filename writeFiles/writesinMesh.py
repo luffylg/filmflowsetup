@@ -1,7 +1,11 @@
+import math
+
+import globalvar as gv
 def writesinmesh(modelLocation):
     pass
 #     # x=0:10e-3/256:30e-3;%提取256个点
-#     # y=1e-3*cos(2*pi/10e-3.*x)-1e-3;
+    for x in range(gv.L_in,gv.L_in+gv.L*gv.wnum,gv.L/256):
+        y=gv.A*math.cos(2*math.pi/gv.L*(x-gv.L_in))-gv.A
 #     # n=length(x);
 #     # z=zeros(n,1);
 #     # curve1=[x' y' z];

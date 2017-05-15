@@ -1,7 +1,7 @@
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  2.4.0                                 |
+|  \\    /   O peration     | Version:  1.7.1                                 |
 |   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
@@ -23,8 +23,8 @@ sets
   {
     type uniform;
     axis y;
-    start (0.025 -0.002 0);
-    end (0.025 -0.00032128 0);
+    start (0.005 -0.002 0);
+    end (0.005 -0.00032128 0);
     nPoints 100;
   }
 );
@@ -39,8 +39,8 @@ surfaces
     {
         // Iso surface for constant values.
         // Triangles guaranteed not to cross cells.
-        type            isoSurfaceCell;    // always triangulated
-        isoField        alpha.water;
+        type            isoSurface;    // always triangulated
+        isoField        alpha1;
         isoValue        0.5;
         interpolate     true;
         regularise      true;              // do not simplify
@@ -50,7 +50,7 @@ surfaces
 fields            
 ( 
     U    
-    alpha.water 
+    alpha1 
 );
 
 

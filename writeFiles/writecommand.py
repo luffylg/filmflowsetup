@@ -12,6 +12,7 @@ def writecommand():
         for lines in gv.files:
             cmdfile.write('\n'.encode())
             cmdfile.write(('cd %s\n' % lines).encode())
+            cmdfile.write(('    echo "%s handling"\n' % lines).encode())
             cmdfile.write('    runApplication blockMesh\n'.encode())
             cmdfile.write('    runApplication setFields\n'.encode())
             cmdfile.write('    runApplication interFoam\n'.encode())

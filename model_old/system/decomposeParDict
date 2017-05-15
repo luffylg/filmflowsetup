@@ -1,7 +1,7 @@
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  2.4.0                                 |
+|  \\    /   O peration     | Version:  1.7.1                                 |
 |   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
@@ -11,47 +11,40 @@ FoamFile
     format      ascii;
     class       dictionary;
     location    "system";
-    object      sampleDict;
+    object      decomposeParDict;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-interpolationScheme cellPoint;
-setFormat raw;
-sets
-(
-    velocity
-  {
-    type uniform;
-    axis y;
-    start (0.025 -0.002 0);
-    end (0.025 -0.00032128 0);
-    nPoints 100;
-  }
-);
+numberOfSubdomains 8;
 
+method          simple;
 
+simpleCoeffs
+{
+    n               ( 4 2 1 );
+    delta           0.001;
+}
 
-surfaceFormat      raw;
+hierarchicalCoeffs
+{
+    n               ( 1 1 1 );
+    delta           0.001;
+    order           xyz;
+}
 
-surfaces        
-(
-    constantIso
-    {
-        // Iso surface for constant values.
-        // Triangles guaranteed not to cross cells.
-        type            isoSurfaceCell;    // always triangulated
-        isoField        alpha.water;
-        isoValue        0.5;
-        interpolate     true;
-        regularise      true;              // do not simplify
-    }
-);
+metisCoeffs
+{
+    processorWeights ( 1 1 1 1 );
+}
 
-fields            
-( 
-    U    
-    alpha.water 
-);
+manualCoeffs
+{
+    dataFile        "";
+}
+
+distributed     no;
+
+roots           ( );
 
 
 // ************************************************************************* //

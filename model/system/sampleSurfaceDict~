@@ -2,7 +2,7 @@
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
 |  \\    /   O peration     | Version:  2.4.0                                 |
-|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
 FoamFile
@@ -11,25 +11,11 @@ FoamFile
     format      ascii;
     class       dictionary;
     location    "system";
-    object      sampleDict;
+    object      sampleSurfaceDict;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 interpolationScheme cellPoint;
-setFormat raw;
-sets
-(
-    velocity
-  {
-    type uniform;
-    axis y;
-    start (0.025 -0.002 0);
-    end (0.025 -0.00032128 0);
-    nPoints 100;
-  }
-);
-
-
 
 surfaceFormat      raw;
 
@@ -39,7 +25,7 @@ surfaces
     {
         // Iso surface for constant values.
         // Triangles guaranteed not to cross cells.
-        type            isoSurfaceCell;    // always triangulated
+        type            isoSurface;    // always triangulated
         isoField        alpha.water;
         isoValue        0.5;
         interpolate     true;
@@ -48,10 +34,8 @@ surfaces
 );
 
 fields            
-( 
-    U    
+(     
     alpha.water 
 );
-
 
 // ************************************************************************* //

@@ -1,8 +1,8 @@
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  2.4.0                                 |
-|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+|  \\    /   O peration     | Version:  2.1.1                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
 FoamFile
@@ -11,40 +11,50 @@ FoamFile
     format      ascii;
     class       dictionary;
     location    "system";
-    object      decomposeParDict;
+    object      fvSchemes;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-numberOfSubdomains 8;
-
-method          simple;
-
-simpleCoeffs
+ddtSchemes
 {
-    n               ( 4 2 1 );
-    delta           0.001;
+    default         Euler;
 }
 
-hierarchicalCoeffs
+gradSchemes
 {
-    n               ( 1 1 1 );
-    delta           0.001;
-    order           xyz;
+    default         Gauss linear;
 }
 
-metisCoeffs
+divSchemes
 {
-    processorWeights ( 1 1 1 1 );
+    div(rho*phi,U)  Gauss limitedLinearV 1;
+    div(phi,alpha)  Gauss vanLeer;
+    div(phirb,alpha) Gauss interfaceCompression;
+div((muEff*dev(T(grad(U))))) Gauss linear;
 }
 
-manualCoeffs
+laplacianSchemes
 {
-    dataFile        "";
+    default         Gauss linear corrected;
 }
 
-distributed     no;
+interpolationSchemes
+{
+    default         linear;
+}
 
-roots           ( );
+snGradSchemes
+{
+    default         corrected;
+}
+
+fluxRequired
+{
+    default         no;
+    p_rgh;
+    pcorr;
+    alpha1;
+}
 
 
 // ************************************************************************* //
