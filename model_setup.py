@@ -44,10 +44,11 @@ def writefiles(filename):
     writeudocument(uLocation)
     writesetfields(setFieldsLocation)
     writegfile(gLocation)
-    # writesample(sampleLocation)
+    writesample(sampleLocation)
 
 
 def do(method):
+    gv.method=method
     bd = os.path.join(gv.base, gv.structure)
     # change Re in fixed angle
     if method == 'Reang':

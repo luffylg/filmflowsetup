@@ -9,7 +9,11 @@ def writesample(filename, ypostion):
         lines = readmodel.readlines()
 
     height = float(filename.split('h')[1])/1000
-    lines[26] = lines[26].replace('-0.00032128', str("%10.8f" % float(ypostion)))  # 第二个参数由alpha0.5处得到
+    # lines[26] = lines[26].replace('-0.00032128', str("%10.8f" % float(ypostion)))  # 第二个参数由alpha0.5处得到
+
+    # 临时处理
+    lines[25] = '    start (%10.8f %10.8f 0);\n' % (0.025, -height)  # 提取第二个波波谷
+    lines[26] = '    end (%10.8f %10.8f 0);\n' % (0.025, float(ypostion))  # 第二个参数由alpha0.5处得到
 
     with open(di, 'w') as writemodel:
         writemodel.writelines(lines)
