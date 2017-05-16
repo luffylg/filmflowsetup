@@ -1,33 +1,34 @@
 import os
 import sys
 
-import math
-
 
 def getyposition(xposition):
-    path=os.path.join('postProcessing','surfaces','0.5','alpha.water_constantIso.raw')
-    newnamepath=os.path.join('postProcessing','surfaces','0.5','alpha.water_constantIso.raw')
-    os.rename(path,newnamepath)
-    with open(newnamepath,'r') as water_constant:
-        lines=water_constant.readline()
-    lines=lines[2:-1]
-    xpos=10000
-    ypos=10000
+    path = os.path.join('postProcessing', 'surfaces', '0.5', 'alpha.water_constantIso.raw')
+    newnamepath = os.path.join('postProcessing', 'surfaces', '0.5', 'alpha.water_constantIso')
+    if os.path.exists(path):
+        os.rename(path, newnamepath)
+    with open(newnamepath, 'r') as water_constant:
+        lines = water_constant.readlines()
+    lines = lines[2:-1]
+    xpos = 10000
+    ypos = 10000
     for line in lines:
-        hang=line.split(" ")
-        x=float(hang[0])
-        y=float(hang[1])
-        if abs(x-xposition)<xpos:
-            xpos=abs(x-xposition)
-            ypos=y
-    with open(newnamepath,'w') as water_constant2:
+        hang = line.split(" ")
+        x = float(hang[0])
+        y = float(hang[1])
+        if abs(x - xposition) < xpos:
+            xpos = abs(x - xposition)
+            xfinal = x
+            ypos = y
+    with open(newnamepath, 'w') as water_constant2:
+        print("x:%10.8f y:%10.8f" % (xfinal, ypos))
         water_constant2.writelines(lines)
     return ypos
 
 
-def writesample(filename,xpos):
+def writesample(filename, xpos):
     di = os.path.join('system', 'sampleDict')
-    print("sampling " + di)
+    print("sampling " + filename)
     with open(di, 'r') as readmodel:
         lines = readmodel.readlines()
 
@@ -46,4 +47,4 @@ def writesample(filename,xpos):
 if __name__ == '__main__':
     if len(sys.argv) == 3:
         location = sys.argv[1]
-        writesample(location,sys.argv[2])
+        writesample(location, float(sys.argv[2]))

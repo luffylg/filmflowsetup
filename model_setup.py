@@ -16,6 +16,7 @@ def pre_process():
     gv.det = math.pow(
             3.0 * gv.v * gv.v * gv.Re / (gv.g * math.sin(math.radians(gv.ang))),
             1.0 / 3)
+    print('det:'+str(gv.det))
 
 
 def copy_model(method):
@@ -30,7 +31,7 @@ def copy_model(method):
         raise Exception("alreadt exists {0}".format(gv.realfiledir))
     else:
         shutil.copytree("model", gv.realfiledir)
-        gv.files.append(filename)
+        gv.files.append([filename,gv.Re,gv.A,gv.wnum])
     writefiles(filename)
 
 
@@ -69,10 +70,12 @@ def do(method):
     if method == 'wavenums':
         # change wavenums
         gv.basedir = os.path.join(bd, 'wavenums')
-        for i in range(2, 5):
+        for i in range(2, 10):
             gv.wnum = i
-            pre_process()
-            copy_model("wnum")
+            for j in range(1, 100, 5):
+                gv.Re = j
+                pre_process()
+                copy_model("wnum")
     writecommand()
 
 
