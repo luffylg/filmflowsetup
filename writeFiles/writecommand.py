@@ -18,9 +18,8 @@ def writecommand():
             # cmdfile.write('    runApplication setFields\n'.encode())
             # cmdfile.write('    runApplication interFoam\n'.encode())
             # cmdfile.write('    runApplication sample\n'.encode())
-            ypositon = 1111
             # cmdfile.write(('    python3 ../../../handlesample.py %s %s %s\n' % (lines,ypositon,gv.realfiledir)).encode())
             cmdfile.write(
-                ('    python3 ../../../handlesample_tmp.py %s %s\n' % (lines, ypositon)).encode())
+                ('    python3 ../../../handlesample_tmp.py %s %s\n' % (lines,gv.L_in + 3 / 2 * gv.L)).encode())
             cmdfile.write('    runApplication sample\n'.encode())
             cmdfile.write('cd ..\n'.encode())
