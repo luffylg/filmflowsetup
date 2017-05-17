@@ -63,7 +63,7 @@ def do(method):
         gv.basedir = os.path.join(bd, 'height')
         for i in range(1, 5):
             gv.A = i / 1000
-            for j in range(1, 100, 5):
+            for j in range(1, 102, 2):
                 gv.Re = j
                 pre_process()
                 copy_model("h")
