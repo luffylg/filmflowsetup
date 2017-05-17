@@ -54,7 +54,7 @@ def do(method):
     # change Re in fixed angle
     if method == 'Reang':
         gv.basedir = os.path.join(bd, 'Reang')
-        for i in [1, 5, 15, 20, 25]:
+        for i in [1, 5, 15]:
             gv.Re = i
             pre_process()
             copy_model("Reang")
@@ -82,5 +82,5 @@ def do(method):
 if __name__ == '__main__':
     # 一次只能运行一个
     # do('Reang')
-    do('height')
-    # do('wavenums')
+    # do('height')
+    do('wavenums')

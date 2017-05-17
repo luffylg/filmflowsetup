@@ -4,9 +4,14 @@ import globalvar as gv
 
 
 def writesinmesh(modelLocation):
+    def frange(start, stop, step=1.0):
+        while start < stop:
+            yield start
+            start += step
+
     points = []
-    for x in range(gv.L_in, gv.L_in + gv.L * gv.wnum, gv.L / 256):
-        y = gv.A * math.cos(2 * math.pi / gv.L * (x - gv.L_in)) - gv.A
+    for x in frange(gv.L_in, gv.L_in + gv.L * gv.wnum, gv.L / 256):
+        y = gv.A * math.cos(2 * math.pi / gv.L * (x - gv.L_in))/2 - gv.A/2
         points.append([x, y])
 
     # %define the corrugations in the bottom
@@ -76,13 +81,13 @@ def writesinmesh(modelLocation):
 
         CELLS = math.ceil(gv.L_in / dmi / 2)
 
-        modelfile.write('     hex (0 12 13 1 6 15 16 7) (%d 12 1) simpleGrading (1 1 1)\n' % CELLS)
-        modelfile.write('     hex (1 13 14 2 7 16 17 8) (%d 36 1) simpleGrading (1 1 1)\n' % CELLS)
+        modelfile.write('     hex (12 0 1 13 15 6 7 16) (%d 12 1) simpleGrading (1 1 1)\n' % CELLS)
+        modelfile.write('     hex (13 1 2 14 16 7 8 17) (%d 36 1) simpleGrading (1 1 1)\n' % CELLS)
 
         CELLS = math.ceil(gv.L_out / dmi / 2)
 
-        modelfile.write('     hex (3 4 19 18 9 10 22 21) (%d 12 1) simpleGrading (1 1 1)\n' % CELLS)
-        modelfile.write('     hex (4 5 20 19 10 11 23 22) (%d 36 1) simpleGrading (1 1 1)\n' % CELLS)
+        modelfile.write('     hex (3 18 19 4 9 21 22 10) (%d 12 1) simpleGrading (1 1 1)\n' % CELLS)
+        modelfile.write('     hex (4 19 20 5 10 22 23 11) (%d 36 1) simpleGrading (1 1 1)\n' % CELLS)
 
         modelfile.write(');\n')
         modelfile.write('\n')

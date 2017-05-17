@@ -147,7 +147,7 @@ if __name__ == '__main__':
         if type == 'yspeed':
             yspeed(re, ang, A, L, wnum, structure, L_in)
         if type == 'yspeedabs':
-            yspeed(re, ang, A, L, wnum, structure, L_in)
+            yspeed_abs(re, ang, A, L, wnum, structure, L_in)
         if type == 'yintensity_surface':
             yintensity_surface(re, ang, A, L, wnum, structure, L_in)
         if type == 'yintensity_bogu':
