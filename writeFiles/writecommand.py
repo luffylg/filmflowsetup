@@ -37,8 +37,8 @@ def writecommand():
             gv.A=line[2]
             gv.wnum=line[3]
             # cmdfile.write(('    python3 ../../../dataprocess.py %s %s %s %s %s %s %s %s\n' % ('fuzhi',gv.Re, gv.ang, gv.A, gv.L, gv.wnum, gv.structure, gv.L_in)).encode())
-            cmdfile.write(('    python3 ../../../dataprocess.py %s %s %s %s %s %s %s %s\n' % ('yspeed',gv.Re, gv.ang, gv.A, gv.L, gv.wnum, gv.structure, gv.L_in)).encode())
-
+            # cmdfile.write(('    python3 ../../../dataprocess.py %s %s %s %s %s %s %s %s\n' % ('yspeed',gv.Re, gv.ang, gv.A, gv.L, gv.wnum, gv.structure, gv.L_in)).encode())
+            cmdfile.write(('    python3 ../../../dataprocess.py %s %s %s %s %s %s %s %s\n' % ('yintensity_surface',gv.Re, gv.ang, gv.A, gv.L, gv.wnum, gv.structure, gv.L_in)).encode())
 
             cmdfile.write('cd ..\n'.encode())
 
