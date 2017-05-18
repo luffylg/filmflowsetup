@@ -71,8 +71,10 @@ def do(method):
         # change wavenums
         gv.basedir = os.path.join(bd, 'wavenums')
         for i in range(2, 10):
+            if i==5:
+                continue
             gv.wnum = i
-            for j in range(1, 100, 5):
+            for j in range(1, 102, 2):
                 gv.Re = j
                 pre_process()
                 copy_model("wnum")
