@@ -1,7 +1,9 @@
 import csv
 import os
 import sys
-def yintensity_bogu(re, ang, A, L, wnum, structure, L_in):
+
+
+def yintensity_bogu(re, ang, A, L, wnum, structure, L_in, niandu):
     path = os.path.join('postProcessing', 'sets', '0.5', 'velocity_U.xy')
     newnamepath = os.path.join('postProcessing', 'sets', '0.5', 'velocity_U')
     if os.path.exists(path) and not os.path.exists(newnamepath):
@@ -9,7 +11,7 @@ def yintensity_bogu(re, ang, A, L, wnum, structure, L_in):
     if not os.path.exists('../../../yintensity_bogu.csv'):
         with open('../../../yintensity_bogu.csv', 'w', newline='') as yintensity_bogu:
             csv_writer = csv.writer(yintensity_bogu, dialect='excel')
-            csv_writer.writerow(['re', 'ang', 'A', 'L', 'wnum', 'structure', 'yintensity_bogu'])
+            csv_writer.writerow(['re', 'ang', 'A', 'L', 'wnum', 'structure', 'yintensity_bogu', ', niandu'])
 
     with open('../../../yintensity_bogu.csv', 'a', newline='') as yintensity_bogu:
         csv_writer = csv.writer(yintensity_bogu, dialect='excel')
@@ -23,10 +25,10 @@ def yintensity_bogu(re, ang, A, L, wnum, structure, L_in):
             sumt += yintensity_bogu
             count += 1
         ys = sumt / count
-        csv_writer.writerow([re, ang, A, L, wnum, structure, ys])
+        csv_writer.writerow([re, ang, A, L, wnum, structure, ys, niandu])
 
 
-def yintensity_surface(re, ang, A, L, wnum, structure, L_in):
+def yintensity_surface(re, ang, A, L, wnum, structure, L_in, niandu):
     path = os.path.join('postProcessing', 'surfaces', '0.5', 'U_constantIso.raw')
     newnamepath = os.path.join('postProcessing', 'surfaces', '0.5', 'U_constantIso')
     if os.path.exists(path) and not os.path.exists(newnamepath):
@@ -34,7 +36,7 @@ def yintensity_surface(re, ang, A, L, wnum, structure, L_in):
     if not os.path.exists('../../../yintensity_surface.csv'):
         with open('../../../yintensity_surface.csv', 'w', newline='') as yintensity_surface:
             csv_writer = csv.writer(yintensity_surface, dialect='excel')
-            csv_writer.writerow(['re', 'ang', 'A', 'L', 'wnum', 'structure', 'yintensity_surface'])
+            csv_writer.writerow(['re', 'ang', 'A', 'L', 'wnum', 'structure', 'yintensity_surface', 'niandu'])
     with open('../../../yintensity_surface.csv', 'a', newline='') as yintensity_surface:
         csv_writer = csv.writer(yintensity_surface, dialect='excel')
         newnamepath = os.path.join('postProcessing', 'surfaces', '0.5', 'U_constantIso')
@@ -51,10 +53,10 @@ def yintensity_surface(re, ang, A, L, wnum, structure, L_in):
                 sumt += yintensity_surface
                 count += 1
         ys = sumt / count
-        csv_writer.writerow([re, ang, A, L, wnum, structure, ys])
+        csv_writer.writerow([re, ang, A, L, wnum, structure, ys, niandu])
 
 
-def yspeed(re, ang, A, L, wnum, structure, L_in):
+def yspeed(re, ang, A, L, wnum, structure, L_in, niandu):
     path = os.path.join('postProcessing', 'surfaces', '0.5', 'U_constantIso.raw')
     newnamepath = os.path.join('postProcessing', 'surfaces', '0.5', 'U_constantIso')
     if os.path.exists(path) and not os.path.exists(newnamepath):
@@ -62,7 +64,7 @@ def yspeed(re, ang, A, L, wnum, structure, L_in):
     if not os.path.exists('../../../yspeed.csv'):
         with open('../../../yspeed.csv', 'w', newline='') as yspeed:
             csv_writer = csv.writer(yspeed, dialect='excel')
-            csv_writer.writerow(['re', 'ang', 'A', 'L', 'wnum', 'structure', 'yspeed'])
+            csv_writer.writerow(['re', 'ang', 'A', 'L', 'wnum', 'structure', 'yspeed', 'niandu'])
     with open('../../../yspeed.csv', 'a', newline='') as yspeed:
         csv_writer = csv.writer(yspeed, dialect='excel')
         newnamepath = os.path.join('postProcessing', 'surfaces', '0.5', 'U_constantIso')
@@ -79,7 +81,8 @@ def yspeed(re, ang, A, L, wnum, structure, L_in):
                 sumt += yspeed
                 count += 1
         ys = sumt / count
-        csv_writer.writerow([re, ang, A, L, wnum, structure, ys])
+        csv_writer.writerow([re, ang, A, L, wnum, structure, ys, niandu])
+
 
 def yspeed_abs(re, ang, A, L, wnum, structure, L_in):
     path = os.path.join('postProcessing', 'surfaces', '0.5', 'U_constantIso.raw')
@@ -89,7 +92,7 @@ def yspeed_abs(re, ang, A, L, wnum, structure, L_in):
     if not os.path.exists('../../../yspeed_abs.csv'):
         with open('../../../yspeed_abs.csv', 'w', newline='') as yspeed_abs:
             csv_writer = csv.writer(yspeed_abs, dialect='excel')
-            csv_writer.writerow(['re', 'ang', 'A', 'L', 'wnum', 'structure', 'yspeed_abs'])
+            csv_writer.writerow(['re', 'ang', 'A', 'L', 'wnum', 'structure', 'yspeed_abs', 'niandu'])
     with open('../../../yspeed_abs.csv', 'a', newline='') as yspeed_abs:
         csv_writer = csv.writer(yspeed_abs, dialect='excel')
         newnamepath = os.path.join('postProcessing', 'surfaces', '0.5', 'U_constantIso')
@@ -106,14 +109,14 @@ def yspeed_abs(re, ang, A, L, wnum, structure, L_in):
                 sumt += yspeed_abs
                 count += 1
         ys = sumt / count
-        csv_writer.writerow([re, ang, A, L, wnum, structure, ys])
+        csv_writer.writerow([re, ang, A, L, wnum, structure, ys, niandu])
 
 
-def fuzhi(re, ang, A, L, wnum, structure, L_in):
+def fuzhi(re, ang, A, L, wnum, structure, L_in, niandu):
     if not os.path.exists('../../../fuzhi.csv'):
         with open('../../../fuzhi.csv', 'w', newline='') as fuzhi:
             csv_writer = csv.writer(fuzhi, dialect='excel')
-            csv_writer.writerow(['re', 'ang', 'A', 'L', 'wnum', 'structure', 'fuzhi'])
+            csv_writer.writerow(['re', 'ang', 'A', 'L', 'wnum', 'structure', 'fuzhi', 'niandu'])
     with open('../../../fuzhi.csv', 'a', newline='') as fuzhi:
         csv_writer = csv.writer(fuzhi, dialect='excel')
         newnamepath = os.path.join('postProcessing', 'surfaces', '0.5', 'alpha.water_constantIso')
@@ -129,11 +132,11 @@ def fuzhi(re, ang, A, L, wnum, structure, L_in):
                 minval = min(minval, y)
                 maxval = max(maxval, y)
         fz = maxval - minval
-        csv_writer.writerow([re, ang, A, L, wnum, structure, fz])
+        csv_writer.writerow([re, ang, A, L, wnum, structure, fz, niandu])
 
 
 if __name__ == '__main__':
-    if len(sys.argv) == 9:
+    if len(sys.argv) == 10:
         type = sys.argv[1]
         re = sys.argv[2]
         ang = sys.argv[3]
@@ -142,13 +145,14 @@ if __name__ == '__main__':
         wnum = sys.argv[6]
         structure = sys.argv[7]
         L_in = sys.argv[8]
+        niandu = sys.argv[9]
         if type == 'fuzhi':
-            fuzhi(re, ang, A, L, wnum, structure, L_in)
+            fuzhi(re, ang, A, L, wnum, structure, L_in, niandu)
         if type == 'yspeed':
-            yspeed(re, ang, A, L, wnum, structure, L_in)
+            yspeed(re, ang, A, L, wnum, structure, L_in, niandu)
         if type == 'yspeedabs':
-            yspeed_abs(re, ang, A, L, wnum, structure, L_in)
+            yspeed_abs(re, ang, A, L, wnum, structure, L_in, niandu)
         if type == 'yintensity_surface':
-            yintensity_surface(re, ang, A, L, wnum, structure, L_in)
+            yintensity_surface(re, ang, A, L, wnum, structure, L_in, niandu)
         if type == 'yintensity_bogu':
-            yintensity_bogu(re, ang, A, L, wnum, structure, L_in)
+            yintensity_bogu(re, ang, A, L, wnum, structure, L_in, niandu)

@@ -14,9 +14,9 @@ import globalvar as gv
 def pre_process():
     # calculate the thickness
     gv.det = math.pow(
-            3.0 * gv.v * gv.v * gv.Re / (gv.g * math.sin(math.radians(gv.ang))),
-            1.0 / 3)
-    print('det:'+str(gv.det))
+        3.0 * gv.v * gv.v * gv.Re / (gv.g * math.sin(math.radians(gv.ang))),
+        1.0 / 3)
+    print('det:' + str(gv.det))
 
 
 def copy_model(method):
@@ -26,12 +26,15 @@ def copy_model(method):
         filename = "r{0}a{1}h{2}".format(gv.Re, gv.ang, gv.A * 1000)
     if method == "wnum":
         filename = "r{0}a{1}w{2}".format(gv.Re, gv.ang, gv.wnum)
+    if method == "niandu":
+        filename = "r{0}a{1}niandu{2}".format(gv.Re, gv.ang, int(gv.v * 10000000))
+
     gv.realfiledir = os.path.join(gv.basedir, filename)
     if os.path.exists(gv.realfiledir):
         raise Exception("alreadt exists {0}".format(gv.realfiledir))
     else:
         shutil.copytree("model", gv.realfiledir)
-        gv.files.append([filename,gv.Re,gv.A,gv.wnum])
+        gv.files.append([filename, gv.Re, gv.A, gv.wnum, gv.v])
     writefiles(filename)
 
 
@@ -49,7 +52,7 @@ def writefiles(filename):
 
 
 def do(method):
-    gv.method=method
+    gv.method = method
     bd = os.path.join(gv.base, gv.structure)
     # change Re in fixed angle
     if method == 'Reang':
@@ -73,18 +76,28 @@ def do(method):
         # change wavenums
         gv.basedir = os.path.join(bd, 'wavenums')
         for i in range(2, 10):
-            if i==5:
+            if i == 5:
                 continue
             gv.wnum = i
             for j in range(1, 102, 2):
                 gv.Re = j
                 pre_process()
                 copy_model("wnum")
+    if method == 'niandu':
+        # change wavenums
+        gv.basedir = os.path.join(bd, 'niandu')
+        for i in range(174, 406, 58):
+            gv.v = i / 10000000
+            for j in range(1, 102, 2):
+                gv.Re = j
+                pre_process()
+                copy_model("niandu")
     writecommand()
 
 
 if __name__ == '__main__':
     # 一次只能运行一个
-    do('Reang')
+    # do('Reang')
     # do('height')
     # do('wavenums')
+    do('niandu')
