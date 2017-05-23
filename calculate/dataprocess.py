@@ -84,7 +84,7 @@ def yspeed(re, ang, A, L, wnum, structure, L_in, niandu):
         csv_writer.writerow([re, ang, A, L, wnum, structure, ys, niandu])
 
 
-def yspeed_abs(re, ang, A, L, wnum, structure, L_in):
+def yspeed_abs(re, ang, A, L, wnum, structure, L_in,niandu):
     path = os.path.join('postProcessing', 'surfaces', '0.5', 'U_constantIso.raw')
     newnamepath = os.path.join('postProcessing', 'surfaces', '0.5', 'U_constantIso')
     if os.path.exists(path) and not os.path.exists(newnamepath):
