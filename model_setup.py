@@ -84,11 +84,15 @@ def do(method):
                 pre_process()
                 copy_model("wnum")
     if method == 'niandu':
+        def frange(start, stop, step=1.0):
+            while start < stop:
+                yield start
+                start += step
         # change wavenums
         gv.basedir = os.path.join(bd, 'niandu')
-        for i in range(174, 406, 58):
+        for i in range(58, 580, 58):
             gv.v = i / 10000000
-            for j in range(1, 102, 2):
+            for j in frange(1, 70, 0.5):
                 gv.Re = j
                 pre_process()
                 copy_model("niandu")
