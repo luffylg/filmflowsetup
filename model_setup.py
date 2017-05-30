@@ -14,8 +14,8 @@ import globalvar as gv
 def pre_process():
     # calculate the thickness
     gv.det = math.pow(
-        3.0 * gv.v * gv.v * gv.Re / (gv.g * math.sin(math.radians(gv.ang))),
-        1.0 / 3)
+            3.0 * gv.v * gv.v * gv.Re / (gv.g * math.sin(math.radians(gv.ang))),
+            1.0 / 3)
     print('det:' + str(gv.det))
 
 
@@ -34,7 +34,7 @@ def copy_model(method):
         raise Exception("alreadt exists {0}".format(gv.realfiledir))
     else:
         shutil.copytree("model", gv.realfiledir)
-        gv.files.append([filename, gv.Re, gv.A, gv.wnum, gv.v])
+        gv.files.append([filename, gv.Re, gv.A, gv.wnum, gv.v, gv.ang])
     writefiles(filename)
 
 
@@ -88,6 +88,7 @@ def do(method):
             while start < stop:
                 yield start
                 start += step
+
         # change wavenums
         gv.basedir = os.path.join(bd, 'niandu')
         for i in range(58, 580, 58):
@@ -101,7 +102,7 @@ def do(method):
 
 if __name__ == '__main__':
     # 一次只能运行一个
-    # do('Reang')
+    do('Reang')
     # do('height')
     # do('wavenums')
-    do('niandu')
+    # do('niandu')
