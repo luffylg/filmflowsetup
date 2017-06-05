@@ -91,9 +91,21 @@ def do(method):
 
         # change wavenums
         gv.basedir = os.path.join(bd, 'niandu')
-        for i in range(58, 580, 58):
+        # for i in frange(23.2, 57, 11.6):
+        #     gv.v = i / 10000000
+        #     for j in frange(70, 110, 0.5):
+        #         gv.Re = j
+        #         pre_process()
+        #         copy_model("niandu")
+        # for i in frange(69.6, 115, 11.6):
+        #     gv.v = i / 10000000
+        #     for j in frange(34, 70, 0.5):
+        #         gv.Re = j
+        #         pre_process()
+        #         copy_model("niandu")
+        for i in [34.8]:
             gv.v = i / 10000000
-            for j in frange(1, 70, 0.5):
+            for j in frange(120, 140, 0.5):
                 gv.Re = j
                 pre_process()
                 copy_model("niandu")
@@ -102,7 +114,7 @@ def do(method):
 
 if __name__ == '__main__':
     # 一次只能运行一个
-    do('Reang')
+    # do('Reang')
     # do('height')
     # do('wavenums')
-    # do('niandu')
+    do('niandu')
