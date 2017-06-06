@@ -105,7 +105,7 @@ def do(method):
         #         copy_model("niandu")
         for i in [34.8]:
             gv.v = i / 10000000
-            for j in frange(120, 140, 0.5):
+            for j in frange(110, 120, 0.5):
                 gv.Re = j
                 pre_process()
                 copy_model("niandu")
