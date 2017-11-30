@@ -57,7 +57,7 @@ def do(method):
     # change Re in fixed angle
     if method == 'Reang':
         gv.basedir = os.path.join(bd, 'Reang')
-        for i in range(21, 80, 10):
+        for i in range(30, 40, 10):
             gv.ang = i
             for j in range(1, 102, 2):
                 gv.Re = j
@@ -66,12 +66,12 @@ def do(method):
     if method == 'height':
         # change height of corrugation
         gv.basedir = os.path.join(bd, 'height')
-        for i in range(1, 5):
-            gv.A = i / 1000
-            for j in range(1, 102, 2):
-                gv.Re = j
-                pre_process()
-                copy_model("h")
+        # for i in range(1, 5):
+        gv.A = 0.01
+        for j in range(1, 500, 5):
+            gv.Re = j
+            pre_process()
+            copy_model("h")
     if method == 'wavenums':
         # change wavenums
         gv.basedir = os.path.join(bd, 'wavenums')
@@ -114,7 +114,7 @@ def do(method):
 
 if __name__ == '__main__':
     # 一次只能运行一个
-    # do('Reang')
+    do('Reang')
     # do('height')
     # do('wavenums')
-    do('niandu')
+    # do('niandu')

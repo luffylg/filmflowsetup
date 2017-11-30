@@ -89,7 +89,7 @@ def writerecdot(modelfile):
 
 
 def writeblockmesh(modelLocation):
-    if gv.structure == 'sin':
+    if gv.structure == 'sin' or gv.structure == 'plate':
         writesinmesh(modelLocation)
         return
     with open(modelLocation, 'w') as modelfile:

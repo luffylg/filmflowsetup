@@ -11,7 +11,10 @@ def writesinmesh(modelLocation):
 
     points = []
     for x in frange(gv.L_in, gv.L_in + gv.L * gv.wnum, gv.L / 256):
-        y = gv.A * math.cos(2 * math.pi / gv.L * (x - gv.L_in))/2 - gv.A/2
+        if gv.structure == 'sin':
+            y = gv.A * math.cos(2 * math.pi / gv.L * (x - gv.L_in))/2 - gv.A/2
+        else:
+            y = 0
         points.append([x, y])
 
     # %define the corrugations in the bottom
