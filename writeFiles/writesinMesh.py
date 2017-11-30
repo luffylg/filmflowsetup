@@ -47,29 +47,29 @@ def writesinmesh(modelLocation):
         modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.wnum * gv.L, gv.det, 0))  # 4
         modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.wnum * gv.L, 4 * gv.det, 0))  # 5
 
-        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in, 0, 0.0001))  # 6
-        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in, gv.det, 0.0001))  # 7
-        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in, 4 * gv.det, 0.0001))  # 8
+        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in, 0, gv.width))  # 6
+        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in, gv.det, gv.width))  # 7
+        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in, 4 * gv.det, gv.width))  # 8
 
-        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.wnum * gv.L, 0, 0.0001))  # 9
-        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.wnum * gv.L, gv.det, 0.0001))  # 10
-        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.wnum * gv.L, 4 * gv.det, 0.0001))  # 11
+        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.wnum * gv.L, 0, gv.width))  # 9
+        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.wnum * gv.L, gv.det, gv.width))  # 10
+        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.wnum * gv.L, 4 * gv.det, gv.width))  # 11
 
         modelfile.write('(%10.8f %10.8f %10.8f)\n' % (0, 0, 0))  # 12
         modelfile.write('(%10.8f %10.8f %10.8f)\n' % (0, gv.det, 0))  # 13
         modelfile.write('(%10.8f %10.8f %10.8f)\n' % (0, 4 * gv.det, 0))  # 14
 
-        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (0, 0, 0.0001))  # 15
-        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (0, gv.det, 0.0001))  # 16
-        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (0, 4 * gv.det, 0.0001))  # 17
+        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (0, 0, gv.width))  # 15
+        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (0, gv.det, gv.width))  # 16
+        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (0, 4 * gv.det, gv.width))  # 17
 
         modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L_out + gv.wnum * gv.L, 0, 0))  # 18
         modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L_out + gv.wnum * gv.L, gv.det, 0))  # 19
         modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L_out + gv.wnum * gv.L, 4 * gv.det, 0))  # 20
 
-        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L_out + gv.wnum * gv.L, 0, 0.0001))  # 21
-        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L_out + gv.wnum * gv.L, gv.det, 0.0001))  # 22
-        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L_out + gv.wnum * gv.L, 4 * gv.det, 0.0001))  # 23
+        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L_out + gv.wnum * gv.L, 0, gv.width))  # 21
+        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L_out + gv.wnum * gv.L, gv.det, gv.width))  # 22
+        modelfile.write('(%10.8f %10.8f %10.8f)\n' % (gv.L_in + gv.L_out + gv.wnum * gv.L, 4 * gv.det, gv.width))  # 23
 
         modelfile.write(');\n')
 
@@ -79,18 +79,26 @@ def writesinmesh(modelLocation):
         dmi = gv.det / 12
         CELLS = math.ceil(gv.L * gv.wnum / dmi)
 
-        modelfile.write('     hex (0 3 4 1 6 9 10 7) (%d 12 1) simpleGrading (1 1 1)\n' % CELLS)
-        modelfile.write('     hex (1 4 5 2 7 10 11 8) (%d 36 1) simpleGrading (1 1 1)\n' % CELLS)
+        # z方向网格密度
+        zdmi = gv.det
+        # z方向网格数
+        if gv.width == 0.0001 or not gv.is3d:
+            znum = 1
+        else:
+            znum = math.ceil(gv.width/zdmi)
+
+        modelfile.write('     hex (0 3 4 1 6 9 10 7) (%d 12 %d) simpleGrading (1 1 1)\n' % (CELLS, znum))
+        modelfile.write('     hex (1 4 5 2 7 10 11 8) (%d 36 %d) simpleGrading (1 1 1)\n' % (CELLS, znum))
 
         CELLS = math.ceil(gv.L_in / dmi / 2)
 
-        modelfile.write('     hex (12 0 1 13 15 6 7 16) (%d 12 1) simpleGrading (1 1 1)\n' % CELLS)
-        modelfile.write('     hex (13 1 2 14 16 7 8 17) (%d 36 1) simpleGrading (1 1 1)\n' % CELLS)
+        modelfile.write('     hex (12 0 1 13 15 6 7 16) (%d 12 %d) simpleGrading (1 1 1)\n' % (CELLS, znum))
+        modelfile.write('     hex (13 1 2 14 16 7 8 17) (%d 36 %d) simpleGrading (1 1 1)\n' % (CELLS, znum))
 
         CELLS = math.ceil(gv.L_out / dmi / 2)
 
-        modelfile.write('     hex (3 18 19 4 9 21 22 10) (%d 12 1) simpleGrading (1 1 1)\n' % CELLS)
-        modelfile.write('     hex (4 19 20 5 10 22 23 11) (%d 36 1) simpleGrading (1 1 1)\n' % CELLS)
+        modelfile.write('     hex (3 18 19 4 9 21 22 10) (%d 12 %d) simpleGrading (1 1 1)\n' % (CELLS, znum))
+        modelfile.write('     hex (4 19 20 5 10 22 23 11) (%d 36 %d) simpleGrading (1 1 1)\n' % (CELLS, znum))
 
         modelfile.write(');\n')
         modelfile.write('\n')
@@ -119,19 +127,19 @@ def writesinmesh(modelLocation):
         modelfile.write('spline 6 9\n')
         modelfile.write('(\n')
         for point in points:
-            modelfile.write('( %10.8f %10.8f %10.8f) \n' % (point[0], point[1], 0.0001))
+            modelfile.write('( %10.8f %10.8f %10.8f) \n' % (point[0], point[1], gv.width))
         modelfile.write(')\n')
 
         modelfile.write('spline 7 10\n')
         modelfile.write('(\n')
         for point in points:
-            modelfile.write('( %10.8f %10.8f %10.8f) \n' % (point[0], gv.det, 0.0001))
+            modelfile.write('( %10.8f %10.8f %10.8f) \n' % (point[0], gv.det, gv.width))
         modelfile.write(')\n')
 
         modelfile.write('spline 8 11\n')
         modelfile.write('(\n')
         for point in points:
-            modelfile.write('( %10.8f %10.8f %10.8f) \n' % (point[0], 4 * gv.det, 0.0001))
+            modelfile.write('( %10.8f %10.8f %10.8f) \n' % (point[0], 4 * gv.det, gv.width))
         modelfile.write(')\n')
 
         modelfile.write(');\n')
@@ -157,6 +165,13 @@ def writesinmesh(modelLocation):
         modelfile.write('        (0 3 9 6)\n')
         modelfile.write('        (0 12 15 6)\n')
         modelfile.write('        (18 3 9 21)\n')
+        if gv.is3d:
+            modelfile.write('        (0 3 4 1)\n')
+            modelfile.write('        (1 4 5 2)\n')
+            modelfile.write('        (0 12 13 1)\n')
+            modelfile.write('        (18 3 4 19)\n')
+            modelfile.write('        (1 13 14 2)\n')
+            modelfile.write('        (19 4 5 20)\n')
         modelfile.write('    )\n')
         modelfile.write('    patch airinlet\n')
         modelfile.write('    (\n')
@@ -182,13 +197,15 @@ def writesinmesh(modelLocation):
         modelfile.write('    )\n')
 
         modelfile.write('    empty frontAndBackPlanes\n')
+
         modelfile.write('    (\n')
-        modelfile.write('        (0 3 4 1)\n')
-        modelfile.write('        (1 4 5 2)\n')
-        modelfile.write('        (0 12 13 1)\n')
-        modelfile.write('        (18 3 4 19)\n')
-        modelfile.write('        (1 13 14 2)\n')
-        modelfile.write('        (19 4 5 20)\n')
+        if not gv.is3d:
+            modelfile.write('        (0 3 4 1)\n')
+            modelfile.write('        (1 4 5 2)\n')
+            modelfile.write('        (0 12 13 1)\n')
+            modelfile.write('        (18 3 4 19)\n')
+            modelfile.write('        (1 13 14 2)\n')
+            modelfile.write('        (19 4 5 20)\n')
 
         modelfile.write('    )\n')
 

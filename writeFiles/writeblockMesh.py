@@ -125,6 +125,14 @@ def writeblockmesh(modelLocation):
         modelfile.write('blocks \n')
         modelfile.write('(\n')
         dmi = gv.det / 12
+        # z方向网格密度
+        zdmi = gv.det
+        # z方向网格数
+        if gv.width == 0.0001 or not gv.is3d:
+            znum = 1
+        else:
+            znum = math.ceil(gv.width/zdmi)
+
         if gv.structure == 'tri':
             opch = gv.wnum * 6 + 9
             for i in range(0, 2 * gv.wnum + 2):
@@ -133,54 +141,54 @@ def writeblockmesh(modelLocation):
                     CELLS = math.ceil(gv.L_in / dmi / 2)
                 if i == 2 * gv.wnum + 1:
                     CELLS = math.ceil(gv.L_out / dmi / 2)
-                modelfile.write('     hex (%d %d %d %d %d %d %d %d) (%d 12 1) simpleGrading (1 1 1)\n' % (
+                modelfile.write('     hex (%d %d %d %d %d %d %d %d) (%d 12 %d) simpleGrading (1 1 1)\n' % (
                     i * 3, (i + 1) * 3, (i + 1) * 3 + 1, i * 3 + 1, i * 3 + opch,
                     (i + 1) * 3 + opch,
-                    (i + 1) * 3 + 1 + opch, i * 3 + 1 + opch, CELLS))
-                modelfile.write('     hex (%d %d %d %d %d %d %d %d) (%d 36 1) simpleGrading (1 1 1)\n' % (
+                    (i + 1) * 3 + 1 + opch, i * 3 + 1 + opch, CELLS, znum))
+                modelfile.write('     hex (%d %d %d %d %d %d %d %d) (%d 36 %d) simpleGrading (1 1 1)\n' % (
                     i * 3 + 1, (i + 1) * 3 + 1, (i + 1) * 3 + 1 + 1, i * 3 + 1 + 1, i * 3 + opch + 1,
                     (i + 1) * 3 + opch + 1, (i + 1) * 3 + 1 + opch + 1,
-                    i * 3 + 1 + opch + 1, CELLS))
+                    i * 3 + 1 + opch + 1, CELLS, znum))
 
         if gv.structure == 'rec':
             opch = gv.wnum * 8 + 6
-            modelfile.write('     hex (0 4 5 1 %d %d %d %d) (%d 12 1) simpleGrading (1 1 1)\n' % (
-                opch, opch + 4, opch + 5, opch + 1, math.ceil(gv.L_in / dmi / 2)))
-            modelfile.write('     hex (1 5 6 2 %d %d %d %d) (%d 36 1) simpleGrading (1 1 1)\n' % (
-                opch + 1, opch + 5, opch + 6, opch + 2, math.ceil(gv.L_in / dmi / 2)))
+            modelfile.write('     hex (0 4 5 1 %d %d %d %d) (%d 12 %d) simpleGrading (1 1 1)\n' % (
+                opch, opch + 4, opch + 5, opch + 1, math.ceil(gv.L_in / dmi / 2), znum))
+            modelfile.write('     hex (1 5 6 2 %d %d %d %d) (%d 36 %d) simpleGrading (1 1 1)\n' % (
+                opch + 1, opch + 5, opch + 6, opch + 2, math.ceil(gv.L_in / dmi / 2), znum))
 
             CELLS = math.ceil(gv.L / 2 / dmi)
             for i in range(1, 2 * gv.wnum):
                 if i % 2 == 1:
                     a0 = 4 * (i - 1) + 3
-                    modelfile.write('     hex (%d %d %d %d %d %d %d %d) (%d %d 1) simpleGrading (1 1 1)\n' % (
+                    modelfile.write('     hex (%d %d %d %d %d %d %d %d) (%d %d %d) simpleGrading (1 1 1)\n' % (
                         a0, a0 + 4, a0 + 4 + 1, a0 + 1,
                         a0 + opch, a0 + 4 + opch, a0 + 4 + 1 + opch,
-                        a0 + 1 + opch, CELLS, math.ceil(gv.A / dmi)))
+                        a0 + 1 + opch, CELLS, math.ceil(gv.A / dmi), znum))
 
                 a0 = 4 * (i - 1) + 4
-                modelfile.write('     hex (%d %d %d %d %d %d %d %d) (%d 12 1) simpleGrading (1 1 1)\n' % (
+                modelfile.write('     hex (%d %d %d %d %d %d %d %d) (%d 12 %d) simpleGrading (1 1 1)\n' % (
                     a0, a0 + 4, a0 + 4 + 1, a0 + 1,
                     a0 + opch, a0 + 4 + opch, a0 + 4 + 1 + opch,
-                    a0 + 1 + opch, CELLS))
+                    a0 + 1 + opch, CELLS, znum))
 
                 a0 = 4 * (i - 1) + 5
-                modelfile.write('     hex (%d %d %d %d %d %d %d %d) (%d 36 1) simpleGrading (1 1 1)\n' % (
+                modelfile.write('     hex (%d %d %d %d %d %d %d %d) (%d 36 %d) simpleGrading (1 1 1)\n' % (
                     a0, a0 + 4, a0 + 4 + 1, a0 + 1,
                     a0 + opch, a0 + 4 + opch, a0 + 4 + 1 + opch,
-                    a0 + 1 + opch, CELLS))
+                    a0 + 1 + opch, CELLS, znum))
 
             a0 = 4 * (2 * gv.wnum - 1) + 4
-            modelfile.write('     hex (%d %d %d %d %d %d %d %d) (%d 12 1) simpleGrading (1 1 1)\n' % (
+            modelfile.write('     hex (%d %d %d %d %d %d %d %d) (%d 12 %d) simpleGrading (1 1 1)\n' % (
                 a0, a0 + 3, a0 + 3 + 1,
                 a0 + 1, a0 + opch, a0 + 3 + opch,
                 a0 + 3 + 1 + opch, a0 + 1 + opch,
-                math.ceil(gv.L_out / dmi / 2)))
-            modelfile.write('     hex (%d %d %d %d %d %d %d %d) (%d 36 1) simpleGrading (1 1 1)\n' % (
+                math.ceil(gv.L_out / dmi / 2), znum))
+            modelfile.write('     hex (%d %d %d %d %d %d %d %d) (%d 36 %d) simpleGrading (1 1 1)\n' % (
                 a0 + 1, a0 + 3 + 1, a0 + 3 + 1 + 1,
                 a0 + 1 + 1, a0 + opch + 1,
                 a0 + 3 + opch + 1, a0 + 3 + 1 + opch + 1,
-                a0 + 1 + opch + 1, math.ceil(gv.L_out / dmi / 2)))
+                a0 + 1 + opch + 1, math.ceil(gv.L_out / dmi / 2), znum))
 
         modelfile.write(');\n')
         modelfile.write('\n')
@@ -222,10 +230,20 @@ def writeblockmesh(modelLocation):
             for i in range(0, 2 * gv.wnum + 2):
                 a0 = 3 * i
                 modelfile.write('        (%d %d %d %d)\n' % (a0, a0 + 3, a0 + 3 + opch, a0 + opch))
+                if gv.is3d:
+                    modelfile.write('        (%d %d %d %d)\n' % (a0, a0 + 3, a0 + 3 + 1, a0 + 1))
+                    modelfile.write('        (%d %d %d %d)\n' % (a0 + 1, a0 + 3 + 1, a0 + 3 + 1 + 1, a0 + 1 + 1))
+                    modelfile.write('        (%d %d %d %d)\n' % (a0 + opch, a0 + 3 + opch, a0 + 3 + 1 + opch, a0 + 1 + opch))
+                    modelfile.write('        (%d %d %d %d)\n' % (a0 + 1 + opch, a0 + 3 + 1 + opch, a0 + 3 + 1 + 1 + opch, a0 + 1 + 1 + opch))
 
         if gv.structure == 'rec':
             opch = gv.wnum * 8 + 6
             modelfile.write('        (0 4 %d %d)\n' % (4 + opch, opch))
+            if gv.is3d:
+                modelfile.write('        (%d %d %d %d)\n' % (0 + opch, 4 + opch, 5 + opch, 1 + opch))
+                modelfile.write('        (%d %d %d %d)\n' % (1 + opch, 5 + opch, 6 + opch, 2 + opch))
+                modelfile.write('        (0 4 5 1)\n')
+                modelfile.write('        (1 5 6 2)\n')
 
             for i in range(1, 2 * gv.wnum):
                 if i % 2 == 1:
@@ -233,12 +251,29 @@ def writeblockmesh(modelLocation):
                     modelfile.write('        (%d %d %d %d)\n' % (a0, a0 + 1, a0 + 1 + opch, a0 + opch))
                     modelfile.write('        (%d %d %d %d)\n' % (a0, a0 + 4, a0 + 4 + opch, a0 + opch))
                     modelfile.write('        (%d %d %d %d)\n' % (a0 + 4, a0 + 4 + 1, a0 + 4 + 1 + opch, a0 + 4 + opch))
+                    if gv.is3d:
+                        modelfile.write('        (%d %d %d %d)\n' % (a0, a0 + 4, a0 + 4 + 1, a0 + 1))
+                        modelfile.write('        (%d %d %d %d)\n' % (a0 + 1, a0 + 4 + 1, a0 + 4 + 1 + 1, a0 + 1 + 1))
+                        modelfile.write('        (%d %d %d %d)\n' % (a0 + 2, a0 + 4 + 2, a0 + 4 + 1 + 2, a0 + 1 + 2))
+                        modelfile.write('        (%d %d %d %d)\n' % (a0 + opch, a0 + 4 + opch, a0 + 4 + 1 + opch, a0 + 1 + opch))
+                        modelfile.write('        (%d %d %d %d)\n' % (a0 + 1 + opch, a0 + 4 + 1 + opch, a0 + 4 + 1 + 1 + opch, a0 + 1 + 1 + opch))
+                        modelfile.write('        (%d %d %d %d)\n' % (a0 + 2 + opch, a0 + 4 + 2 + opch, a0 + 4 + 1 + 2 + opch, a0 + 1 + 2 + opch))
                 else:
                     a0 = 4 * (i - 1) + 4
                     modelfile.write('        (%d %d %d %d)\n' % (a0, a0 + 4, a0 + 4 + opch, a0 + opch))
+                    if gv.is3d:
+                        modelfile.write('        (%d %d %d %d)\n' % (a0, a0 + 4, a0 + 4 + 1, a0 + 1))
+                        modelfile.write('        (%d %d %d %d)\n' % (a0 + 1, a0 + 4 + 1, a0 + 4 + 1 + 1, a0 + 1 + 1))
+                        modelfile.write('        (%d %d %d %d)\n' % (a0 + opch, a0 + 4 + opch, a0 + 4 + 1 + opch, a0 + 1 + opch))
+                        modelfile.write('        (%d %d %d %d)\n' % (a0 + 1 + opch, a0 + 4 + 1 + opch, a0 + 4 + 1 + 1 + opch, a0 + 1 + 1 + opch))
 
             a0 = 4 * (2 * gv.wnum - 1) + 4
             modelfile.write('        (%d %d %d %d)\n' % (a0, a0 + 3, a0 + 3 + opch, a0 + opch))
+            if gv.is3d:
+                modelfile.write('        (%d %d %d %d)\n' % (a0, a0 + 3, a0 + 3 + 1, a0 + 1))
+                modelfile.write('        (%d %d %d %d)\n' % (a0 + 1, a0 + 3 + 1, a0 + 3 + 1 + 1, a0 + 1 + 1))
+                modelfile.write('        (%d %d %d %d)\n' % (a0 + opch, a0 + 3 + opch, a0 + 3 + 1 + opch, a0 + 1 + opch))
+                modelfile.write('        (%d %d %d %d)\n' % (a0 + 1 + opch, a0 + 3 + 1 + opch, a0 + 3 + 1 + 1 + opch, a0 + 1 + 1 + opch))
 
         modelfile.write('    )\n')
         if gv.samedirecasflow:

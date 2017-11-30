@@ -32,3 +32,4 @@ width=float(getconfig("structure", "width"))
 structure=getconfig("structure", "structure")
 realfiledir=''
 samedirecasflow=True
+is3d=True
