@@ -19,7 +19,10 @@ def writecommand():
             cmdfile.write(('    echo "%s handling"\n' % lines).encode())
             cmdfile.write('    runApplication blockMesh\n'.encode())
             cmdfile.write('    runApplication setFields\n'.encode())
-            cmdfile.write('    runApplication interFoam\n'.encode())
+            cmdfile.write('    runApplication decomposePar\n'.encode())
+            # cmdfile.write('    runParallel mpirun -np 8 interFoam -parallel\n'.encode())
+            cmdfile.write('    runApplication mpirun -np 8 interFoam -parallel\n'.encode())
+            cmdfile.write('    runApplication reconstructPar\n'.encode())
             cmdfile.write('    runApplication sample\n'.encode())
             cmdfile.write(
                 ('    python3 ../../../handlesample.py %s %s\n' % (lines, gv.L_in + 3 / 2 * gv.L)).encode())
@@ -38,15 +41,24 @@ def writecommand():
             gv.wnum = line[3]
             gv.v = line[4]
             gv.ang=line[5]
-            cmdfile.write(('    python3 ../../../dataprocess.py %s %s %s %s %s %s %s %s %s\n' % (
-            'fuzhi', gv.Re, gv.ang, gv.A, gv.L, gv.wnum, gv.structure, gv.L_in, gv.v)).encode())
-            cmdfile.write(('    python3 ../../../dataprocess.py %s %s %s %s %s %s %s %s %s\n' % (
-            'yspeed', gv.Re, gv.ang, gv.A, gv.L, gv.wnum, gv.structure, gv.L_in, gv.v)).encode())
-            cmdfile.write(('    python3 ../../../dataprocess.py %s %s %s %s %s %s %s %s %s\n' % (
-            'yspeedabs', gv.Re, gv.ang, gv.A, gv.L, gv.wnum, gv.structure, gv.L_in, gv.v)).encode())
-            cmdfile.write(('    python3 ../../../dataprocess.py %s %s %s %s %s %s %s %s %s\n' % (
-            'yintensity_surface', gv.Re, gv.ang, gv.A, gv.L, gv.wnum, gv.structure, gv.L_in, gv.v)).encode())
-            cmdfile.write(('    python3 ../../../dataprocess.py %s %s %s %s %s %s %s %s %s\n' % (
-            'yintensity_bogu', gv.Re, gv.ang, gv.A, gv.L, gv.wnum, gv.structure, gv.L_in, gv.v)).encode())
+            gv.density = line[6]
+            gv.sigma=line[7]
+            gv.L=line[8]
+            cmdfile.write(('    python3 ../../../dataprocess.py %s %s %s %s %s %s %s %s %s %s %s\n' % (
+            'fuzhi', gv.Re, gv.ang, gv.A, gv.L, gv.wnum, gv.structure, gv.L_in, gv.v, gv.density, gv.sigma)).encode())
+            cmdfile.write(('    python3 ../../../dataprocess.py %s %s %s %s %s %s %s %s %s %s %s\n' % (
+            'yspeed', gv.Re, gv.ang, gv.A, gv.L, gv.wnum, gv.structure, gv.L_in, gv.v, gv.density, gv.sigma)).encode())
+            cmdfile.write(('    python3 ../../../dataprocess.py %s %s %s %s %s %s %s %s %s %s %s\n' % (
+            'yspeedabs', gv.Re, gv.ang, gv.A, gv.L, gv.wnum, gv.structure, gv.L_in, gv.v, gv.density, gv.sigma)).encode())
+            cmdfile.write(('    python3 ../../../dataprocess.py %s %s %s %s %s %s %s %s %s %s %s\n' % (
+            'yintensity_surface', gv.Re, gv.ang, gv.A, gv.L, gv.wnum, gv.structure, gv.L_in, gv.v, gv.density, gv.sigma)).encode())
+            cmdfile.write(('    python3 ../../../dataprocess.py %s %s %s %s %s %s %s %s %s %s %s\n' % (
+            'yintensity_bogu', gv.Re, gv.ang, gv.A, gv.L, gv.wnum, gv.structure, gv.L_in, gv.v, gv.density, gv.sigma)).encode())
+            cmdfile.write(('    python3 ../../../dataprocess.py %s %s %s %s %s %s %s %s %s %s %s\n' % (
+            'eddyposition', gv.Re, gv.ang, gv.A, gv.L, gv.wnum, gv.structure, gv.L_in, gv.v, gv.density, gv.sigma)).encode())
+            cmdfile.write(('    python3 ../../../dataprocess.py %s %s %s %s %s %s %s %s %s %s %s\n' % (
+            'averagethickness', gv.Re, gv.ang, gv.A, gv.L, gv.wnum, gv.structure, gv.L_in, gv.v, gv.density, gv.sigma)).encode())
+            cmdfile.write(('    python3 ../../../dataprocess.py %s %s %s %s %s %s %s %s %s %s %s\n' % (
+            'surfacelength', gv.Re, gv.ang, gv.A, gv.L, gv.wnum, gv.structure, gv.L_in, gv.v, gv.density, gv.sigma)).encode())
 
             cmdfile.write('cd ..\n'.encode())

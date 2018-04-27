@@ -38,7 +38,7 @@ def writesample(filename, xpos):
         lines = readmodel.readlines()
 
     yposition = getyposition(xpos)
-    lines[26] = lines[26].replace('-0.00032128', str("%10.8f" % float(yposition)))  # 第二个参数由alpha0.5处得到
+    lines[34] = lines[34].replace('-0.00032128', str("%10.8f" % float(yposition)))  # 第二个参数由alpha0.5处得到
 
     with open(di, 'w') as writemodel:
         writemodel.writelines(lines)

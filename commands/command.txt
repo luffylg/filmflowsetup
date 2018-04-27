@@ -13,7 +13,7 @@ for j=4:2:60
     fprintf(s2,'    runApplication blockMesh\n');
     fprintf(s2,'    runApplication setFields\n');
     fprintf(s2,'    runApplication decomposePar\n');
-    fprintf(s2,'    runParallel $application 8\n');
+    fprintf(s2,'    runParallel mpirun -np 8 interFoam -parallel\n');
     fprintf(s2,'    runApplication reconstructPar\n');
     fprintf(s2,'    runApplication sample\n');
     fprintf(s2,'    runApplication foamToTecplot360\n');

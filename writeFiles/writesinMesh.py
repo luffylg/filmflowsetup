@@ -76,29 +76,29 @@ def writesinmesh(modelLocation):
         modelfile.write('blocks \n')
         modelfile.write('(\n')
 
-        dmi = gv.det / 12
+        dmi = gv.det / gv.wanggemidu
         CELLS = math.ceil(gv.L * gv.wnum / dmi)
 
         # z方向网格密度
-        zdmi = gv.det
+        zdmi = 0.002
         # z方向网格数
         if gv.width == 0.0001 or not gv.is3d:
             znum = 1
         else:
             znum = math.ceil(gv.width/zdmi)
 
-        modelfile.write('     hex (0 3 4 1 6 9 10 7) (%d 12 %d) simpleGrading (1 1 1)\n' % (CELLS, znum))
-        modelfile.write('     hex (1 4 5 2 7 10 11 8) (%d 36 %d) simpleGrading (1 1 1)\n' % (CELLS, znum))
+        modelfile.write('     hex (0 3 4 1 6 9 10 7) (%d 24 %d) simpleGrading (1 1 1)\n' % (CELLS, znum))
+        modelfile.write('     hex (1 4 5 2 7 10 11 8) (%d 25 %d) simpleGrading (1 2 1)\n' % (CELLS, znum))
 
-        CELLS = math.ceil(gv.L_in / dmi / 2)
+        CELLS = math.ceil(gv.L_in / dmi)
 
-        modelfile.write('     hex (12 0 1 13 15 6 7 16) (%d 12 %d) simpleGrading (1 1 1)\n' % (CELLS, znum))
-        modelfile.write('     hex (13 1 2 14 16 7 8 17) (%d 36 %d) simpleGrading (1 1 1)\n' % (CELLS, znum))
+        modelfile.write('     hex (12 0 1 13 15 6 7 16) (%d 24 %d) simpleGrading (1 1 1)\n' % (CELLS, znum))
+        modelfile.write('     hex (13 1 2 14 16 7 8 17) (%d 25 %d) simpleGrading (1 2 1)\n' % (CELLS, znum))
 
-        CELLS = math.ceil(gv.L_out / dmi / 2)
+        CELLS = math.ceil(gv.L_out / dmi)
 
-        modelfile.write('     hex (3 18 19 4 9 21 22 10) (%d 12 %d) simpleGrading (1 1 1)\n' % (CELLS, znum))
-        modelfile.write('     hex (4 19 20 5 10 22 23 11) (%d 36 %d) simpleGrading (1 1 1)\n' % (CELLS, znum))
+        modelfile.write('     hex (3 18 19 4 9 21 22 10) (%d 24 %d) simpleGrading (1 1 1)\n' % (CELLS, znum))
+        modelfile.write('     hex (4 19 20 5 10 22 23 11) (%d 25 %d) simpleGrading (1 2 1)\n' % (CELLS, znum))
 
         modelfile.write(');\n')
         modelfile.write('\n')
@@ -172,6 +172,12 @@ def writesinmesh(modelLocation):
             modelfile.write('        (18 3 4 19)\n')
             modelfile.write('        (1 13 14 2)\n')
             modelfile.write('        (19 4 5 20)\n')
+
+        if gv.isUpWall:
+            modelfile.write('        (2 5 11 8)\n')
+            modelfile.write('        (2 14 17 8)\n')
+            modelfile.write('        (20 5 11 23)\n')
+
         modelfile.write('    )\n')
         modelfile.write('    patch airinlet\n')
         modelfile.write('    (\n')
@@ -191,9 +197,10 @@ def writesinmesh(modelLocation):
 
         modelfile.write('    patch airatmosphere\n')
         modelfile.write('    (\n')
-        modelfile.write('        (2 5 11 8)\n')
-        modelfile.write('        (2 14 17 8)\n')
-        modelfile.write('        (20 5 11 23)\n')
+        if not gv.isUpWall:
+            modelfile.write('        (2 5 11 8)\n')
+            modelfile.write('        (2 14 17 8)\n')
+            modelfile.write('        (20 5 11 23)\n')
         modelfile.write('    )\n')
 
         modelfile.write('    empty frontAndBackPlanes\n')

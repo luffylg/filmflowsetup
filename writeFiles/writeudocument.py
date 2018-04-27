@@ -60,12 +60,23 @@ def writeudocument(ulocation):
         ufile.write('    }\n')
         ufile.write('    airinlet\n')
         ufile.write('    {\n')
-        ufile.write('        type            zeroGradient;\n')
+        if gv.air_speed == 0:
+             ufile.write('        type            zeroGradient;\n')
+        else:
+            ufile.write('        type            fixedValue;\n')
+            if gv.samedirecasflow:
+                ufile.write('        value           uniform (%10.8f 0 0);\n' % gv.air_speed)
+            else:
+                ufile.write('        value           uniform (%10.8f 0 0);\n' % -gv.air_speed)
         ufile.write('    }\n')
         ufile.write('    airoutlet\n')
         ufile.write('    {\n')
-        ufile.write('        type            fixedValue;\n')
-        ufile.write('        value           uniform (%10.8f 0 0);\n' % umax)
+        if gv.air_speed == 0:
+            ufile.write('        type            fixedValue;\n')
+            ufile.write('        value           uniform (%10.8f 0 0);\n' % umax)
+        else:
+            ufile.write('        type            pressureInletOutletVelocity;\n')
+            ufile.write('        value           uniform (0 0 0);\n')
         ufile.write('    }\n')
         ufile.write('    frontAndBackPlanes\n')
         ufile.write('    {\n')
